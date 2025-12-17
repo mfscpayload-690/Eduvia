@@ -1,4 +1,4 @@
-🔥 SMART CAMPUS ASSISTANT — MASTER TECHNICAL SPEC FOR AI AGENTS
+🔥 EDUVIA — MASTER TECHNICAL SPEC FOR AI AGENTS
 
 Version: 1.0
 Purpose: Provide a deterministic engineering blueprint enabling autonomous coding agents (GitHub Copilot Agent, Google Antigravity, ChatGPT Agents, Cursor IDE Agents) to contribute code safely, consistently, and without architectural drift.
@@ -8,7 +8,7 @@ Agents MUST adhere strictly to these conventions.
 
 1 — CORE PROJECT DESCRIPTION
 
-Build a full-stack Smart Campus Assistant Web App with the following features:
+Build a full-stack Eduvia Web App with the following features:
 
 Timetable viewer
 
@@ -376,7 +376,7 @@ Large PDF downloads triggering timeouts (retry logic recommended)
 13 — FINAL DECLARATION
 
 Any code generated MUST conform to this masterprompt.md file.
-This is the official technical standard for the Smart Campus Assistant project.
+This is the official technical standard for the Eduvia project.
 Deviations are treated as architecture violations.
 
 Agents must operate with clarity, determinism, and consistent patterns aligned with this spec.

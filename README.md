@@ -1,4 +1,4 @@
-# Smart Campus Assistant
+# Eduvia
 
 A hosted web application providing essential campus utilities for students and faculty. Access the live application at your institution's domain.
 

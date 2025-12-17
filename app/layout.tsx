@@ -5,7 +5,7 @@ import { Providers } from "./providers";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
-  title: "Smart Campus Assistant",
+  title: "Eduvia",
   description: "Your all-in-one campus companion",
 };
 

@@ -35,7 +35,7 @@ function getLLMConfig(): LLMConfig {
   }
 }
 
-const SYSTEM_PROMPT = `You are a helpful AI assistant for the Smart Campus Assistant app. You help students with:
+const SYSTEM_PROMPT = `You are a helpful AI assistant for the Eduvia app. You help students with:
 - General questions about the campus
 - Study advice and academic guidance
 - Information about the app features and how to use them

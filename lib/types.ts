@@ -1,5 +1,5 @@
 /**
- * Type definitions for Smart Campus Assistant
+ * Type definitions for Eduvia
  * Single source of truth for all domain models
  */
 

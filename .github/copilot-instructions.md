@@ -1,4 +1,4 @@
-# AI Coding Agent Instructions for Smart Campus Assistant
+# AI Coding Agent Instructions for Eduvia
 
 **This is the authoritative guide for GitHub Copilot, Cursor, and all AI coding agents contributing to this project.**
 
