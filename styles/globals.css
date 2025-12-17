@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  @apply border-neutral-800;
+}
+
+html {
+  @apply scroll-smooth;
+}
+
+body {
+  @apply bg-neutral-950 text-neutral-100;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  @apply w-2 h-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-neutral-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-neutral-700 rounded hover:bg-neutral-600;
+}
+
+/* Smooth transitions */
+a,
+button {
+  @apply transition-colors duration-200;
+}
+
+/* Focus states for accessibility */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  @apply outline-none ring-2 ring-blue-500 ring-offset-2 ring-offset-neutral-950;
+}
+
+/* Dark mode by default */
+@media (prefers-color-scheme: light) {
+  body {
+    @apply bg-neutral-50 text-neutral-950;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-neutral-100;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-neutral-300 hover:bg-neutral-400;
+  }
+
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible {
+    @apply ring-offset-neutral-50;
+  }
+}
