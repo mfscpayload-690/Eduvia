@@ -1,2 +1,49 @@
-docs/🌐 Smart Campus Assistant — Developer Documentation.txt
+# Node / Next.js
+node_modules/
+.next/
+out/
+.next/cache/
+
+# TypeScript / Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Editor / OS
+.DS_Store
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Builds / Coverage
+coverage/
+dist/
+build/
+
+# Local data
+*.local
+
+# Lockfiles (optional; keep if using a single package manager)
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Storybook / Playwright (future-proofing)
+storybook-static/
+playwright-report/
+
+# Turbo / Cache
+.turbo/
+
+# Misc
+*.pem
 docs/Developer Documentation.txt

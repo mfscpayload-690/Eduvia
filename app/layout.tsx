@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
-import { SessionProvider } from "next-auth/react";
 import { Navbar } from "@/components/navbar";
 import { Sidebar } from "@/components/sidebar";
+import { Providers } from "./providers";
 import "@/styles/globals.css";
 
 export const metadata: Metadata = {
   title: "Smart Campus Assistant",
   description: "Your all-in-one campus companion",
-  viewport: "width=device-width, initial-scale=1",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -18,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-neutral-950 text-neutral-100">
-        <SessionProvider>
+        <Providers>
           <div className="flex min-h-screen flex-col md:flex-row">
             {/* Sidebar - Hidden on mobile */}
             <aside className="hidden w-64 border-r border-neutral-800 md:block">
@@ -36,7 +40,7 @@ export default function RootLayout({
               </main>
             </div>
           </div>
-        </SessionProvider>
+        </Providers>
       </body>
     </html>
   );
