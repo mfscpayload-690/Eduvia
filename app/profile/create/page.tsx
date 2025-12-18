@@ -62,6 +62,8 @@ export default function CreateProfile() {
         return;
       }
 
+      console.log("Sending profile data:", formData);
+
       const response = await fetch("/api/profile", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -75,17 +77,28 @@ export default function CreateProfile() {
         })
       });
 
+      console.log("Response status:", response.status);
+      const data = await response.json();
+      console.log("Response data:", data);
+
       if (!response.ok) {
-        const data = await response.json();
         throw new Error(data.error || "Failed to create profile");
       }
 
-      // Update session to reflect profile completion
-      await update();
+      console.log("Profile created successfully, updating session...");
       
+      // Update session to reflect profile completion
+      const updateResult = await update();
+      console.log("Session updated:", updateResult);
+      
+      console.log("Redirecting to dashboard...");
       // Redirect to dashboard
-      router.push("/dashboard");
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 500);
+      
     } catch (err) {
+      console.error("Error:", err);
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setLoading(false);
