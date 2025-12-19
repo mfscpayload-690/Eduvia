@@ -47,3 +47,4 @@ playwright-report/
 # Misc
 *.pem
 docs/Developer Documentation.txt
+test-gemini.js
