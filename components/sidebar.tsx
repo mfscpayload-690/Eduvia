@@ -75,7 +75,7 @@ export function Sidebar() {
   });
 
   return (
-    <div className="p-4 space-y-2">
+    <div className="p-4 space-y-2 bg-white dark:bg-neutral-950">
       <nav className="space-y-1">
         {filteredNavItems.map((item) => {
           const isActive = pathname.startsWith(item.href);

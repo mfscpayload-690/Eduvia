@@ -125,8 +125,8 @@ export default function CreateProfile() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-950 flex items-center justify-center p-4">
-      <Card className="w-full max-w-2xl bg-neutral-900 border-neutral-800">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex items-center justify-center p-4">
+      <Card className="w-full max-w-2xl">
         <CardHeader>
           <CardTitle className="text-2xl text-neutral-100">Complete Your Profile</CardTitle>
           <CardDescription className="text-neutral-400">
@@ -137,14 +137,14 @@ export default function CreateProfile() {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* College Selection */}
             <div>
-              <label htmlFor="college" className="block text-sm font-medium text-neutral-300 mb-2">
+              <label htmlFor="college" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
                 College <span className="text-red-500">*</span>
               </label>
               <select
                 id="college"
                 value={formData.college}
                 onChange={(e) => setFormData({ ...formData, college: e.target.value })}
-                className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-neutral-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 bg-white border border-neutral-300 rounded-lg text-neutral-900 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100"
                 required
               >
                 <option value="">Select your college</option>
@@ -156,7 +156,7 @@ export default function CreateProfile() {
 
             {/* Email (Pre-filled, read-only) */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-neutral-300 mb-2">
+              <label htmlFor="email" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
                 Email
               </label>
               <input
@@ -164,13 +164,13 @@ export default function CreateProfile() {
                 type="email"
                 value={session?.user?.email || ""}
                 disabled
-                className="w-full px-4 py-2 bg-neutral-800/50 border border-neutral-700 rounded-lg text-neutral-400 cursor-not-allowed"
+                className="w-full px-4 py-2 bg-neutral-100 border border-neutral-300 rounded-lg text-neutral-500 cursor-not-allowed dark:bg-neutral-800/50 dark:border-neutral-700 dark:text-neutral-400"
               />
             </div>
 
             {/* Mobile Number */}
             <div>
-              <label htmlFor="mobile" className="block text-sm font-medium text-neutral-300 mb-2">
+              <label htmlFor="mobile" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
                 Mobile Number <span className="text-red-500">*</span>
               </label>
               <input
@@ -179,21 +179,21 @@ export default function CreateProfile() {
                 value={formData.mobile}
                 onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
                 placeholder="Enter your mobile number"
-                className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-neutral-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 bg-white border border-neutral-300 rounded-lg text-neutral-900 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100"
                 required
               />
             </div>
 
             {/* Branch Selection */}
             <div>
-              <label htmlFor="branch" className="block text-sm font-medium text-neutral-300 mb-2">
+              <label htmlFor="branch" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
                 Branch of Study <span className="text-red-500">*</span>
               </label>
               <select
                 id="branch"
                 value={formData.branch}
                 onChange={(e) => handleBranchChange(e.target.value as BranchOfStudy)}
-                className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-neutral-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 bg-white border border-neutral-300 rounded-lg text-neutral-900 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100"
                 required
               >
                 <option value="">Select your branch</option>
@@ -208,14 +208,14 @@ export default function CreateProfile() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Year of Study */}
               <div>
-                <label htmlFor="year" className="block text-sm font-medium text-neutral-300 mb-2">
+                <label htmlFor="year" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
                   Year of Study <span className="text-red-500">*</span>
                 </label>
                 <select
                   id="year"
                   value={formData.year_of_study}
                   onChange={(e) => setFormData({ ...formData, year_of_study: e.target.value })}
-                  className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-neutral-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 bg-white border border-neutral-300 rounded-lg text-neutral-900 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100"
                   required
                 >
                   <option value="">Select year</option>
@@ -228,14 +228,14 @@ export default function CreateProfile() {
 
               {/* Current Semester */}
               <div>
-                <label htmlFor="semester" className="block text-sm font-medium text-neutral-300 mb-2">
+                <label htmlFor="semester" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
                   Current Semester <span className="text-red-500">*</span>
                 </label>
                 <select
                   id="semester"
                   value={formData.semester}
                   onChange={(e) => setFormData({ ...formData, semester: e.target.value })}
-                  className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-neutral-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 bg-white border border-neutral-300 rounded-lg text-neutral-900 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100"
                   required
                 >
                   <option value="">Select semester</option>

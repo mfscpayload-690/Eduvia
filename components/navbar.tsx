@@ -5,6 +5,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { Menu, LogOut, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function Navbar() {
   const { data: session } = useSession();
@@ -25,7 +26,7 @@ export function Navbar() {
   }
 
   return (
-    <nav className="border-b border-neutral-800 bg-neutral-900 px-4 py-3 md:px-6">
+    <nav className="border-b border-neutral-200 bg-white px-4 py-3 md:px-6 dark:border-neutral-800 dark:bg-neutral-900">
       <div className="flex items-center justify-between">
         {/* Logo / Brand */}
         <Link
@@ -40,7 +41,7 @@ export function Navbar() {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-2 hover:bg-neutral-800 rounded-md transition-colors"
+          className="md:hidden p-2 text-neutral-700 hover:bg-neutral-100 rounded-md transition-colors dark:text-neutral-300 dark:hover:bg-neutral-800"
           aria-label="Toggle mobile menu"
         >
           <Menu size={20} />
@@ -48,6 +49,7 @@ export function Navbar() {
 
         {/* Desktop Auth Section */}
         <div className="hidden md:flex items-center gap-4">
+          <ThemeToggle />
           {session ? (
             <>
               <span className="text-sm text-neutral-400">{session.user?.name}</span>
@@ -76,13 +78,16 @@ export function Navbar() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="mt-4 space-y-2 md:hidden pb-4 border-t border-neutral-800 pt-4">
+        <div className="mt-4 space-y-2 md:hidden pb-4 border-t border-neutral-200 pt-4 dark:border-neutral-800">
+          <div className="px-2">
+            <ThemeToggle />
+          </div>
           {mobileNavItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               onClick={() => setMobileMenuOpen(false)}
-              className="block w-full px-3 py-2 rounded-md text-sm text-neutral-200 hover:bg-neutral-800"
+              className="block w-full px-3 py-2 rounded-md text-sm text-neutral-700 hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-neutral-800"
             >
               {item.label}
             </Link>

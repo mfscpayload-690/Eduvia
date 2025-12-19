@@ -11,6 +11,10 @@ html {
 }
 
 body {
+  @apply bg-neutral-50 text-neutral-950 transition-colors duration-300;
+}
+
+.dark body {
   @apply bg-neutral-950 text-neutral-100;
 }
 
@@ -20,11 +24,11 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-neutral-900;
+  @apply bg-neutral-100;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-neutral-700 rounded hover:bg-neutral-600;
+  @apply bg-neutral-300 rounded hover:bg-neutral-400;
 }
 
 /* Smooth transitions */
@@ -40,23 +44,22 @@ input:focus-visible {
   @apply outline-none ring-2 ring-blue-500 ring-offset-2 ring-offset-neutral-950;
 }
 
-/* Dark mode by default */
-@media (prefers-color-scheme: light) {
-  body {
-    @apply bg-neutral-50 text-neutral-950;
-  }
+.dark ::-webkit-scrollbar-track {
+  @apply bg-neutral-900;
+}
 
-  ::-webkit-scrollbar-track {
-    @apply bg-neutral-100;
-  }
+.dark ::-webkit-scrollbar-thumb {
+  @apply bg-neutral-700 hover:bg-neutral-600;
+}
 
-  ::-webkit-scrollbar-thumb {
-    @apply bg-neutral-300 hover:bg-neutral-400;
-  }
+.dark button:focus-visible,
+.dark a:focus-visible,
+.dark input:focus-visible {
+  @apply ring-offset-neutral-950;
+}
 
-  button:focus-visible,
-  a:focus-visible,
-  input:focus-visible {
-    @apply ring-offset-neutral-50;
-  }
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  @apply ring-offset-neutral-50;
 }

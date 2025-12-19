@@ -59,8 +59,8 @@ export default function DashboardPage() {
 
   if (status === "loading") {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <p className="text-neutral-400">Loading...</p>
+      <div className="flex items-center justify-center h-screen bg-white dark:bg-neutral-950">
+        <p className="text-neutral-600 dark:text-neutral-400">Loading...</p>
       </div>
     );
   }
@@ -70,11 +70,11 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-6 p-4 md:p-8">
+    <div className="space-y-6 p-4 md:p-8 bg-white dark:bg-neutral-950">
       {/* Welcome Section */}
       <div>
-        <h1 className="text-3xl font-bold">Welcome, {session.user?.name}!</h1>
-        <p className="text-neutral-400 mt-2">Get started with Eduvia</p>
+        <h1 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100">Welcome, {session.user?.name}!</h1>
+        <p className="text-neutral-600 dark:text-neutral-400 mt-2">Get started with Eduvia</p>
       </div>
 
       {/* Quick Links Grid */}
@@ -94,7 +94,7 @@ export default function DashboardPage() {
 
       {/* Admin Section */}
       {session.user?.role === "admin" && (
-        <div className="mt-8 pt-8 border-t border-neutral-800">
+        <div className="mt-8 pt-8 border-t border-neutral-200 dark:border-neutral-800">
           <h2 className="text-xl font-bold mb-4">Admin Tools</h2>
           <Link href="/admin">
             <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
