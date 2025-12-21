@@ -15,10 +15,7 @@ type BranchOfStudy =
 
 type ProgramType = "B.Tech" | "M.Tech";
 
-const COLLEGES = [
-  "IHRD College of Engineering Kallooppara",
-  "Other College (Please specify in comments)"
-];
+const DEFAULT_COLLEGE = "IHRD College of Engineering Kallooppara";
 
 const BRANCHES: { value: BranchOfStudy; label: string; program: ProgramType }[] = [
   { value: "Computer Science and Engineering(CS)", label: "Computer Science and Engineering (CS)", program: "B.Tech" },
@@ -38,7 +35,7 @@ export default function Settings() {
   const [success, setSuccess] = useState("");
 
   const [formData, setFormData] = useState({
-    college: "",
+    college: DEFAULT_COLLEGE,
     mobile: "",
     semester: "",
     year_of_study: "",
@@ -61,7 +58,7 @@ export default function Settings() {
         const data = await response.json();
         if (data.user) {
           setFormData({
-            college: data.user.college || "",
+            college: DEFAULT_COLLEGE,
             mobile: data.user.mobile || "",
             semester: data.user.semester?.toString() || "",
             year_of_study: data.user.year_of_study?.toString() || "",
@@ -88,7 +85,7 @@ export default function Settings() {
     setSuccess("");
 
     try {
-      if (!formData.college || !formData.mobile || !formData.semester || 
+      if (!formData.mobile || !formData.semester || 
           !formData.year_of_study || !formData.branch || !formData.program_type) {
         setError("Please fill in all fields");
         setLoading(false);
@@ -188,23 +185,18 @@ export default function Settings() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* College Selection */}
+              {/* College (Pre-set) */}
               <div>
                 <label htmlFor="college" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
-                  College <span className="text-red-500">*</span>
+                  College
                 </label>
-                <select
+                <input
                   id="college"
-                  value={formData.college}
-                  onChange={(e) => setFormData({ ...formData, college: e.target.value })}
-                  className="w-full px-4 py-2 bg-white border border-neutral-300 rounded-lg text-neutral-900 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100"
-                  required
-                >
-                  <option value="">Select your college</option>
-                  {COLLEGES.map(college => (
-                    <option key={college} value={college}>{college}</option>
-                  ))}
-                </select>
+                  type="text"
+                  value={DEFAULT_COLLEGE}
+                  disabled
+                  className="w-full px-4 py-2 bg-neutral-100 border border-neutral-300 rounded-lg text-neutral-700 cursor-not-allowed dark:bg-neutral-800/50 dark:border-neutral-700 dark:text-neutral-300"
+                />
               </div>
 
               {/* Email (Pre-filled, read-only) */}
@@ -342,7 +334,7 @@ export default function Settings() {
           <CardContent>
             <div className="space-y-3 text-sm text-neutral-700 dark:text-neutral-300">
               <p>No user data selling, ads usage, or hidden collection. You can delete your account anytime.</p>
-              <p className="text-neutral-400">This will remove your profile and linked data stored in Eduvia.</p>
+              <p className="text-neutral-400">This will remove your profile and linked data stored in eduvia.</p>
             </div>
             <div className="mt-4">
               <Button

@@ -45,7 +45,7 @@ export function Chatbot() {
       setHistory([
         {
           role: "assistant",
-          content: `Welcome ${username}, I'm Eduvia — ask me anything. I can help with using the app and study questions.`,
+          content: `Welcome ${username}, I'm eduvia — ask me anything. I can help with using the app and study questions.`,
         },
       ]);
     }
@@ -99,7 +99,7 @@ export function Chatbot() {
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         whileHover={{ y: -2 }}
-        aria-label="Open Eduvia chat"
+        aria-label="Open eduvia chat"
       >
         <motion.div
           animate={{ rotate: [0, 10, -10, 0] }}
@@ -121,7 +121,7 @@ export function Chatbot() {
           >
             <div className="rounded-xl border border-neutral-200 bg-white shadow-xl dark:border-neutral-800 dark:bg-neutral-900 flex flex-col h-[70vh] sm:h-96">
               <div className="flex items-center justify-between px-3 py-2 border-b border-neutral-200 dark:border-neutral-800 select-none shrink-0">
-                <div className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">Eduvia Assistant</div>
+                <div className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">eduvia Assistant</div>
                 <button
                   onClick={() => setOpen(false)}
                   className="p-1 rounded hover:bg-neutral-100 dark:hover:bg-neutral-800"

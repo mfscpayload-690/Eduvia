@@ -34,8 +34,8 @@ export function Navbar() {
           className="flex items-center gap-2 text-lg font-bold text-blue-500 hover:text-blue-400 transition-colors"
         >
           {/* Logo placeholder - replace with actual logo */}
-          <div className="h-8 w-8 rounded-md border border-blue-500/30 bg-blue-500/10" aria-label="Eduvia logo" />
-          Eduvia
+          <div className="h-8 w-8 rounded-md border border-blue-500/30 bg-blue-500/10" aria-label="eduvia logo" />
+          eduvia
         </Link>
 
         {/* Mobile Menu Button */}

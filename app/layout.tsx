@@ -5,7 +5,7 @@ import "@/styles/globals.css";
 import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
-  title: "Eduvia",
+  title: "eduvia",
   description: "Your all-in-one campus companion",
 };
 

@@ -1,4 +1,4 @@
--- Eduvia Database Schema
+-- eduvia Database Schema
 -- Run this in Supabase SQL Editor to set up the database
 
 -- ============================================================================
@@ -43,6 +43,10 @@ ALTER TABLE notes ADD COLUMN IF NOT EXISTS semester INTEGER;
 ALTER TABLE notes ADD COLUMN IF NOT EXISTS year_of_study INTEGER;
 CREATE INDEX IF NOT EXISTS idx_notes_semester ON notes(semester);
 CREATE INDEX IF NOT EXISTS idx_notes_year ON notes(year_of_study);
+
+-- Optional: Set all users' college to default value
+UPDATE users SET college = 'IHRD College of Engineering Kallooppara' WHERE college IS NULL OR college = '';
+UPDATE users SET college = 'IHRD College of Engineering Kallooppara' WHERE college = 'Other College (Please specify in comments)';
 
 -- ============================================================================
 -- Timetable Table

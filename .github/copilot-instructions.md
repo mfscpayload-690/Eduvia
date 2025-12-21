@@ -1,4 +1,4 @@
-# AI Coding Agent Instructions for Eduvia
+# AI Coding Agent Instructions for eduvia
 
 **This is the authoritative guide for GitHub Copilot, Cursor, and all AI coding agents contributing to this project.**
 

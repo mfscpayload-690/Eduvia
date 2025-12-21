@@ -1,5 +1,5 @@
 /**
- * Type definitions for Eduvia
+ * Type definitions for eduvia
  * Single source of truth for all domain models
  */
 

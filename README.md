@@ -1,4 +1,4 @@
-# Eduvia
+# eduvia
 
 **Status: Under Development**
 
@@ -10,9 +10,9 @@ Your all-in-one campus companion. Effortlessly manage your academic life with in
 
 ---
 
-## What is Eduvia?
+## What is eduvia?
 
-Eduvia is a comprehensive campus management platform designed to streamline student and faculty interactions. Whether you're looking for your next class location, accessing shared course materials, or staying updated on campus events, Eduvia brings everything you need into one unified platform.
+eduvia is a comprehensive campus management platform designed to streamline student and faculty interactions. Whether you're looking for your next class location, accessing shared course materials, or staying updated on campus events, eduvia brings everything you need into one unified platform.
 
 ---
 
@@ -40,7 +40,7 @@ Eduvia is a comprehensive campus management platform designed to streamline stud
 
 ### Sign In
 
-1. Visit Eduvia through your institution's portal
+1. Visit eduvia through your institution's portal
 2. Click "Sign in with Google"
 3. Authenticate with your institutional email
 4. Start managing your campus life

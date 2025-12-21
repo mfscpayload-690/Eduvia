@@ -25,7 +25,7 @@ export default function SignInPage() {
           {/* Left: Branding */}
           <div className="hidden md:flex flex-col justify-center">
             <div className="mb-6 h-12 w-12 rounded-xl border border-neutral-800 bg-neutral-900/60" />
-            <h1 className="text-4xl font-semibold tracking-tight text-neutral-100">Eduvia</h1>
+            <h1 className="text-4xl font-semibold tracking-tight text-neutral-100">eduvia</h1>
             <p className="mt-3 max-w-md text-sm leading-6 text-neutral-400">
               Your all-in-one campus companion. Access timetables, notes, events, lost & found, and a helpful study assistant — all in one place.
             </p>
@@ -37,7 +37,7 @@ export default function SignInPage() {
               <div className="flex flex-col items-center text-center">
                 {/* Logo placeholder */}
                 <div className="mb-4 h-12 w-12 rounded-full border border-neutral-800 bg-neutral-900/60" aria-label="Logo placeholder" />
-                <h2 className="text-2xl font-medium text-neutral-100">Welcome to Eduvia</h2>
+                <h2 className="text-2xl font-medium text-neutral-100">Welcome to eduvia</h2>
                 <p className="mt-1 text-sm text-neutral-400">Sign in to continue</p>
               </div>
 
