@@ -1,50 +1,154 @@
-# Node / Next.js
+# ============================================
+# SECURITY-FIRST GITIGNORE FOR EDUVIA
+# ============================================
+
+# =====================
+# CRITICAL: NEVER PUSH
+# =====================
+
+# Environment files (contain secrets, API keys, DB credentials)
+.env
+.env.*
+.env.local
+.env.development
+.env.production
+.env.staging
+!.env.example
+
+# Private keys and certificates
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*.jks
+
+# Service account credentials
+*-credentials.json
+*-service-account.json
+google-credentials.json
+firebase-*.json
+
+# =====================
+# BUILD ARTIFACTS
+# =====================
+
+# Node.js
 node_modules/
+
+# Next.js
 .next/
 out/
 .next/cache/
+.swc/
 
-# TypeScript / Logs
+# TypeScript build info
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# Build outputs
+dist/
+build/
+coverage/
+
+# =====================
+# LOGS & DEBUG
+# =====================
+
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+.npm/
+*.pid
+*.seed
+*.pid.lock
 
-# Env
-.env
-.env.*
-!.env.example
+# =====================
+# EDITOR & OS
+# =====================
 
-# Editor / OS
+# macOS
 .DS_Store
-*.swp
-*.swo
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
 *~
+.nfs*
+
+# IDEs
 .idea/
 .vscode/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+.project
+.settings/
+*.iml
 
-# Builds / Coverage
-coverage/
-dist/
-build/
+# =====================
+# PACKAGE MANAGERS
+# =====================
 
-# Local data
-*.local
-
-# Lockfiles (optional; keep if using a single package manager)
-package-lock.json
+# Lock files (keep ONE based on your package manager)
+# Uncomment the ones you DON'T use:
+# package-lock.json
 pnpm-lock.yaml
 yarn.lock
 
-# Storybook / Playwright (future-proofing)
-storybook-static/
+# =====================
+# TESTING & QA
+# =====================
+
+coverage/
+.nyc_output/
 playwright-report/
+test-results/
+storybook-static/
 
-# Turbo / Cache
+# =====================
+# CACHE & TEMP
+# =====================
+
 .turbo/
+.cache/
+*.local
+tmp/
+temp/
 
-# Misc
-*.pem
+# =====================
+# PROJECT-SPECIFIC
+# =====================
+
+# Developer notes (may contain sensitive info)
 docs/Developer Documentation.txt
-test-gemini.js
+docs/Master_Prompt.md
+
+# Test files
+test-*.js
+*.test.local.*
+
+# Local uploads
+uploads/
+.uploads/
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# =====================
+# VERCEL / DEPLOYMENT
+# =====================
+
+.vercel/
+.output/

@@ -7,9 +7,9 @@
 // Users & Authentication
 // ============================================================================
 
-export type UserRole = "student" | "admin";
+export type UserRole = "student" | "admin" | "super_admin";
 
-export type BranchOfStudy = 
+export type BranchOfStudy =
   | "Computer Science and Engineering(CS)"
   | "Computer Science and Engineering(CYBERSECURITY)"
   | "Electronics and Communication Engineering (EC)"
@@ -50,6 +50,30 @@ export interface Session {
     role: UserRole;
   };
   expires: string;
+}
+
+// ============================================================================
+// Admin Access Requests
+// ============================================================================
+
+export type AdminRequestStatus = "pending" | "approved" | "rejected";
+
+export interface AdminRequest {
+  id: string;
+  user_id: string;
+  name: string;
+  email: string;
+  college: string;
+  mobile: string;
+  reason?: string;
+  status: AdminRequestStatus;
+  created_at: Date;
+  reviewed_at?: Date;
+  reviewed_by?: string;
+}
+
+export interface CreateAdminRequestDTO {
+  reason?: string;
 }
 
 // ============================================================================

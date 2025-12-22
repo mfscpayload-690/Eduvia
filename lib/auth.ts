@@ -24,12 +24,12 @@ export async function getServerSession(): Promise<Session | null> {
 }
 
 /**
- * Verify that the current user is an admin
+ * Verify that the current user is an admin (admin or super_admin)
  */
 export async function requireAdmin(): Promise<Session> {
   const session = await getServerSession();
 
-  if (!session || session.user.role !== "admin") {
+  if (!session || (session.user.role !== "admin" && session.user.role !== "super_admin")) {
     throw new Error("Unauthorized: Admin access required");
   }
 

@@ -35,7 +35,7 @@ export function Navbar() {
           href="/"
           className="flex items-center gap-2 transition-opacity hover:opacity-80"
         >
-          <ResponsiveLogo size="lg" />
+          <ResponsiveLogo />
         </Link>
 
         {/* Right Section (theme + mobile menu) */}

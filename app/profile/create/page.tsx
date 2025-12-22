@@ -5,8 +5,9 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Shield, Loader2 } from "lucide-react";
 
-type BranchOfStudy = 
+type BranchOfStudy =
   | "Computer Science and Engineering(CS)"
   | "Computer Science and Engineering(CYBERSECURITY)"
   | "Electronics and Communication Engineering (EC)"
@@ -30,6 +31,8 @@ export default function CreateProfile() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [requestFacultyAccess, setRequestFacultyAccess] = useState(false);
+  const [facultyRequestSent, setFacultyRequestSent] = useState(false);
 
   const [formData, setFormData] = useState({
     college: DEFAULT_COLLEGE,
@@ -52,8 +55,8 @@ export default function CreateProfile() {
     setError("");
 
     try {
-      if (!formData.mobile || !formData.semester || 
-          !formData.year_of_study || !formData.branch || !formData.program_type) {
+      if (!formData.mobile || !formData.semester ||
+        !formData.year_of_study || !formData.branch || !formData.program_type) {
         setError("Please fill in all fields");
         setLoading(false);
         return;
@@ -82,18 +85,39 @@ export default function CreateProfile() {
         throw new Error(data.error || "Failed to create profile");
       }
 
+      // If user requested faculty access, submit that request
+      if (requestFacultyAccess) {
+        try {
+          const facultyRes = await fetch("/api/admin-requests", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ reason: "Faculty access requested during profile creation" })
+          });
+
+          if (facultyRes.ok) {
+            setFacultyRequestSent(true);
+            console.log("Faculty access request submitted successfully");
+          } else {
+            const facultyData = await facultyRes.json();
+            console.warn("Faculty request warning:", facultyData.error);
+          }
+        } catch (facultyErr) {
+          console.warn("Could not submit faculty request:", facultyErr);
+        }
+      }
+
       console.log("Profile created successfully, updating session...");
-      
+
       // Update session to reflect profile completion
       const updateResult = await update();
       console.log("Session updated:", updateResult);
-      
+
       console.log("Redirecting to dashboard...");
       // Redirect to dashboard
       setTimeout(() => {
         router.push("/dashboard");
       }, 500);
-      
+
     } catch (err) {
       console.error("Error:", err);
       setError(err instanceof Error ? err.message : "An error occurred");
@@ -238,6 +262,46 @@ export default function CreateProfile() {
               </div>
             </div>
 
+            {/* Faculty Access Request Section */}
+            <div className="mt-6 p-4 rounded-xl border border-brand-500/20 bg-brand-500/5">
+              <div className="flex items-start gap-3">
+                <div className="mt-0.5">
+                  <input
+                    type="checkbox"
+                    id="facultyRequest"
+                    checked={requestFacultyAccess}
+                    onChange={(e) => setRequestFacultyAccess(e.target.checked)}
+                    className="w-5 h-5 rounded border-neutral-300 text-brand-600 focus:ring-brand-500 dark:border-neutral-600 dark:bg-neutral-800"
+                  />
+                </div>
+                <div className="flex-1">
+                  <label htmlFor="facultyRequest" className="flex items-center gap-2 text-sm font-medium text-neutral-700 dark:text-neutral-200 cursor-pointer">
+                    <Shield className="w-4 h-4 text-brand-500" />
+                    I am a Faculty Member
+                  </label>
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+                    Check this box to request faculty/admin access. Your request will be reviewed by the platform administrator.
+                  </p>
+                </div>
+              </div>
+
+              {requestFacultyAccess && (
+                <div className="mt-3 p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
+                  <p className="text-xs text-yellow-600 dark:text-yellow-400">
+                    <strong>Note:</strong> Faculty access requests are manually reviewed. You will start as a student and be promoted once your request is approved.
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Success message for faculty request */}
+            {facultyRequestSent && (
+              <div className="p-3 bg-green-500/10 border border-green-500/30 rounded-lg text-green-600 dark:text-green-400 text-sm flex items-center gap-2">
+                <Shield className="w-4 h-4" />
+                Faculty access request submitted successfully!
+              </div>
+            )}
+
             {error && (
               <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm">
                 {error}
@@ -247,9 +311,16 @@ export default function CreateProfile() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5"
+              className="w-full bg-gradient-brand hover:opacity-90 text-white py-2.5 gap-2"
             >
-              {loading ? "Saving..." : "Complete Profile"}
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                "Complete Profile"
+              )}
             </Button>
           </form>
         </CardContent>

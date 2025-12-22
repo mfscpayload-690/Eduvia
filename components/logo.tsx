@@ -16,11 +16,11 @@ interface LogoProps {
  * - "full": Complete logo with "Eduvia — Campus. Connect. Succeed." text
  * - "icon": Icon-only lowercase "e" mark
  * 
- * Sizes:
- * - "sm": h-8 (compact, mobile navigation)
- * - "md": h-12 (standard, icon usage)
- * - "lg": h-20 (large, page headers)
- * - "xl": h-32 (extra large, hero sections)
+ * Sizes (constrained max-height):
+ * - "sm": h-6 (24px - compact navbar on mobile)
+ * - "md": h-8 (32px - standard navbar)
+ * - "lg": h-10 (40px - larger displays)
+ * - "xl": h-16 (64px - hero sections, login page)
  */
 export function Logo({
   variant = "icon",
@@ -28,25 +28,25 @@ export function Logo({
   className = "",
   alt = "eduvia",
 }: LogoProps) {
-  // Size mappings: { tailwindClass, intrinsicWidth, intrinsicHeight }
+  // Size mappings with constrained heights
   const sizeMap = {
-    sm: { height: "h-8", width: 32, heightPx: 32 },
-    md: { height: "h-12", width: 48, heightPx: 48 },
-    lg: { height: "h-20", width: 240, heightPx: 90 },
-    xl: { height: "h-32", width: 300, heightPx: 110 },
+    sm: "h-6",   // 24px - mobile navbar
+    md: "h-8",   // 32px - desktop navbar  
+    lg: "h-10",  // 40px - larger displays
+    xl: "h-16",  // 64px - hero/login
   };
 
-  const sizeConfig = sizeMap[size];
+  const sizeClass = sizeMap[size];
 
-  // Icon logo (full size variants to maintain aspect ratio)
+  // Icon logo
   if (variant === "icon") {
     return (
       <Image
         src="/assets/eduvia_logo_only.png"
         alt={alt}
-        width={sizeConfig.width}
-        height={sizeConfig.heightPx}
-        className={`${sizeConfig.height} w-auto ${className}`}
+        width={200}
+        height={200}
+        className={`${sizeClass} w-auto object-contain ${className}`}
         priority
       />
     );
@@ -57,9 +57,9 @@ export function Logo({
     <Image
       src="/assets/eduvia_title_only.png"
       alt={`${alt} - Campus. Connect. Succeed.`}
-      width={sizeConfig.width}
-      height={sizeConfig.heightPx}
-      className={`${sizeConfig.height} w-auto ${className}`}
+      width={400}
+      height={150}
+      className={`${sizeClass} w-auto object-contain ${className}`}
       priority
     />
   );
@@ -67,23 +67,22 @@ export function Logo({
 
 /**
  * Responsive Logo Component
- * Automatically switches between full and icon based on screen width
- * Full: desktop (md and up), Icon: mobile (below md)
+ * Shows full logo with tagline on all screen sizes
+ * Properly sized for navbar context
  */
 export function ResponsiveLogo({
-  size = "md",
   className = "",
   alt = "eduvia",
-}: Omit<LogoProps, "variant">) {
+}: { className?: string; alt?: string }) {
   return (
     <>
-      {/* Icon for mobile */}
+      {/* Logo for mobile navbar */}
       <div className="md:hidden">
-        <Logo variant="icon" size={size} className={className} alt={alt} />
+        <Logo variant="full" size="md" className={className} alt={alt} />
       </div>
-      {/* Full text for desktop */}
+      {/* Larger logo for desktop navbar */}
       <div className="hidden md:block">
-        <Logo variant="full" size={size} className={className} alt={alt} />
+        <Logo variant="full" size="lg" className={className} alt={alt} />
       </div>
     </>
   );

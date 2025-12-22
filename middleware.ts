@@ -31,7 +31,9 @@ export default withAuth(
         const pathname = req.nextUrl.pathname;
         if (!token) return false;
         if (pathname.startsWith("/admin")) {
-          return (token as any).role === "admin";
+          const role = (token as any).role;
+          // Allow both admin and super_admin to access admin routes
+          return role === "admin" || role === "super_admin";
         }
         return true;
       },

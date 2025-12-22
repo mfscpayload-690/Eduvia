@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { BookOpen, Clock, MapPin, Calendar, Heart, Settings, Sparkles, Shield } from "lucide-react";
 
 const quickLinks = [
@@ -119,17 +118,27 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      {/* Admin Section */}
-      {(session.user as any).role === "admin" && (
+      {/* Admin Section - visible to admins and super_admin */}
+      {((session.user as any).role === "admin" || (session.user as any).role === "super_admin") && (
         <div className="mt-8 pt-8 border-t border-neutral-800">
           <h2 className="text-2xl font-bold font-heading mb-6 flex items-center gap-2">
             <Shield className="w-6 h-6 text-brand-500" />
             Admin Tools
           </h2>
           <Link href="/admin">
-            <Button size="lg" className="gap-2 bg-gradient-brand hover:opacity-90 transition-opacity text-white border-0 font-medium">
-              Go to Admin Dashboard
-            </Button>
+            <Card className="glass-card border-brand-500/30 transition-all duration-300 hover:scale-[1.02] hover:bg-brand-500/10 hover:border-brand-500/50 hover:shadow-[0_0_20px_rgba(6,182,212,0.2)] group max-w-md">
+              <CardHeader className="p-6">
+                <div className="flex items-center gap-4 mb-3">
+                  <div className="inline-flex p-3 rounded-xl bg-brand-500/10 ring-1 ring-brand-500/30 text-brand-400 transition-colors group-hover:bg-brand-500/20">
+                    <Settings className="w-6 h-6" />
+                  </div>
+                  <CardTitle className="text-xl font-heading mb-0">Admin Dashboard</CardTitle>
+                </div>
+                <CardDescription className="text-neutral-400 transition-colors group-hover:text-neutral-300">
+                  Manage notes, timetables, events, and more
+                </CardDescription>
+              </CardHeader>
+            </Card>
           </Link>
         </div>
       )}

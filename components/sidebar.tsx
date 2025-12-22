@@ -73,8 +73,12 @@ export function Sidebar() {
   const pathname = usePathname();
   const { data: session } = useSession();
 
+  const userRole = session?.user?.role;
+  const isAdmin = userRole === "admin" || userRole === "super_admin";
+
   const filteredNavItems = navItems.filter((item) => {
-    if (item.adminOnly && session?.user?.role !== "admin") {
+    // Admin only links (accessible by both admin and super_admin)
+    if (item.adminOnly && !isAdmin) {
       return false;
     }
     return true;
@@ -84,15 +88,18 @@ export function Sidebar() {
     <div className="flex h-full flex-col gap-4 p-4">
       <nav className="grid gap-2">
         {filteredNavItems.map((item) => {
-          const isActive = pathname.startsWith(item.href);
+          // For /admin specifically, require exact match to avoid highlighting both Admin and Faculty Requests
+          const isActive = item.href === "/admin"
+            ? pathname === "/admin"
+            : pathname.startsWith(item.href);
 
           return (
             <Link
               key={item.href}
               href={item.href}
               className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 ${isActive
-                  ? "bg-gradient-brand text-white shadow-lg shadow-brand-500/25"
-                  : "text-muted-foreground hover:bg-neutral-200/50 dark:hover:bg-white/5 hover:text-foreground hover:scale-105"
+                ? "bg-gradient-brand text-white shadow-lg shadow-brand-500/25"
+                : "text-muted-foreground hover:bg-neutral-200/50 dark:hover:bg-white/5 hover:text-foreground hover:scale-105"
                 }`}
             >
               {item.icon}

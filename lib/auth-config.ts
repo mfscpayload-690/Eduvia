@@ -44,14 +44,23 @@ export const authOptions: AuthOptions = {
           account.providerAccountId
         );
 
-        // Promote to admin if email is in allowlist
-        const allowlist = (process.env.ADMIN_EMAILS || "")
+        const emailLower = user.email.toLowerCase().trim();
+
+        // Check if this user is the super admin (from environment variable)
+        const superAdminEmail = process.env.SUPER_ADMIN_EMAIL?.toLowerCase().trim();
+        if (superAdminEmail && emailLower === superAdminEmail && dbUser.role !== "super_admin") {
+          await updateUserRole(user.email, "super_admin");
+          dbUser.role = "super_admin";
+        }
+
+        // Legacy: Also check ADMIN_EMAILS for regular admin promotion
+        // (This is for backwards compatibility)
+        const adminAllowlist = (process.env.ADMIN_EMAILS || "")
           .split(",")
           .map((e) => e.trim().toLowerCase())
           .filter(Boolean);
 
-        const emailLower = user.email.toLowerCase();
-        if (allowlist.includes(emailLower) && dbUser.role !== "admin") {
+        if (adminAllowlist.includes(emailLower) && dbUser.role === "student") {
           await updateUserRole(user.email, "admin");
           dbUser.role = "admin";
         }
