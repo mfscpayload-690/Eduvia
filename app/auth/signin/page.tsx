@@ -3,8 +3,7 @@
 import { useSession, signIn } from "next-auth/react";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, ShieldCheck, Zap, Sparkles } from "lucide-react";
+import { ArrowRight, ShieldCheck, Zap, Sparkles, Github } from "lucide-react";
 import { Logo } from "@/components/logo";
 
 export default function SignInPage() {
@@ -69,9 +68,11 @@ export default function SignInPage() {
           </div>
 
           {/* Right: Sign-in Card */}
-          <Card className="glass-card w-full max-w-md mx-auto overflow-hidden relative group border-white/10">
-            <div className="absolute inset-0 bg-gradient-to-br from-brand-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <CardContent className="p-8 relative z-10">
+          <div className="w-full max-w-md mx-auto relative group">
+            {/* Manual dark glass card implementation to override theme */}
+            <div className="absolute inset-0 bg-neutral-900/80 backdrop-blur-xl rounded-xl border border-white/10 shadow-2xl" />
+
+            <div className="relative p-8 z-10">
               <div className="flex flex-col items-center text-center space-y-2 mb-8">
                 <div className="lg:hidden mb-4">
                   <Logo variant="icon" size="lg" />
@@ -84,34 +85,43 @@ export default function SignInPage() {
                 <Button
                   onClick={() => signIn("google")}
                   size="lg"
-                  className="w-full gap-3 py-6 bg-white text-neutral-950 hover:bg-neutral-100 border-0 font-medium transition-transform hover:scale-[1.02]"
+                  className="w-full gap-3 py-6 bg-white text-neutral-950 hover:bg-neutral-200 border-0 font-medium transition-transform hover:scale-[1.02]"
                 >
                   <img src="https://www.google.com/favicon.ico" alt="Google" className="w-5 h-5" />
                   Sign in with Google
                 </Button>
 
-                <div className="relative">
+                <Button
+                  onClick={() => signIn("github")}
+                  size="lg"
+                  className="w-full gap-3 py-6 bg-[#24292e] text-white hover:bg-[#2f363d] border border-white/10 font-medium transition-transform hover:scale-[1.02] mt-3"
+                >
+                  <Github className="w-5 h-5" />
+                  Sign in with GitHub
+                </Button>
+
+                <div className="relative mt-6">
                   <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t border-neutral-800" />
+                    <span className="w-full border-t border-white/10" />
                   </div>
                   <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-neutral-950 px-2 text-neutral-500">Includes access to</span>
+                    <span className="bg-transparent px-2 text-neutral-500 font-medium">Includes access to</span>
                   </div>
                 </div>
 
-                <ul className="grid grid-cols-2 gap-3 text-xs text-neutral-400">
-                  <li className="flex items-center gap-2 p-2 rounded-lg bg-white/5"><ArrowRight size={12} className="text-brand-500" /> Timetables</li>
-                  <li className="flex items-center gap-2 p-2 rounded-lg bg-white/5"><ArrowRight size={12} className="text-brand-500" /> Course Notes</li>
-                  <li className="flex items-center gap-2 p-2 rounded-lg bg-white/5"><ArrowRight size={12} className="text-brand-500" /> Events</li>
-                  <li className="flex items-center gap-2 p-2 rounded-lg bg-white/5"><ArrowRight size={12} className="text-brand-500" /> Study Bot</li>
+                <ul className="grid grid-cols-2 gap-3 text-xs text-neutral-400 mt-4">
+                  <li className="flex items-center gap-2 p-2 rounded-lg bg-white/5 border border-white/5"><ArrowRight size={12} className="text-brand-500" /> Timetables</li>
+                  <li className="flex items-center gap-2 p-2 rounded-lg bg-white/5 border border-white/5"><ArrowRight size={12} className="text-brand-500" /> Course Notes</li>
+                  <li className="flex items-center gap-2 p-2 rounded-lg bg-white/5 border border-white/5"><ArrowRight size={12} className="text-brand-500" /> Events</li>
+                  <li className="flex items-center gap-2 p-2 rounded-lg bg-white/5 border border-white/5"><ArrowRight size={12} className="text-brand-500" /> Study Bot</li>
                 </ul>
               </div>
 
-              <p className="mt-8 text-center text-[10px] text-neutral-600">
+              <p className="mt-8 text-center text-[10px] text-neutral-500">
                 By signing in, you agree to our Terms of Service and Privacy Policy.
               </p>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </div>
     </div>

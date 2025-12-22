@@ -1,9 +1,12 @@
 import GoogleProvider from "next-auth/providers/google";
+import GithubProvider from "next-auth/providers/github";
 import { getOrCreateUser, updateUserRole } from "@/lib/supabase";
 import type { AuthOptions } from "next-auth";
 
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
+const githubId = process.env.GITHUB_ID;
+const githubSecret = process.env.GITHUB_SECRET;
 const nextAuthSecret = process.env.NEXTAUTH_SECRET;
 
 if (!googleClientId || !googleClientSecret || !nextAuthSecret) {
@@ -15,6 +18,11 @@ export const authOptions: AuthOptions = {
     GoogleProvider({
       clientId: googleClientId,
       clientSecret: googleClientSecret,
+      allowDangerousEmailAccountLinking: true,
+    }),
+    GithubProvider({
+      clientId: githubId || "",
+      clientSecret: githubSecret || "",
       allowDangerousEmailAccountLinking: true,
     }),
   ],
@@ -67,7 +75,7 @@ export const authOptions: AuthOptions = {
         token.profile_completed = user.profile_completed;
         token.email = user.email;
       }
-      
+
       // Refresh profile_completed status when session is updated
       if (trigger === "update") {
         // Re-fetch user from database to get latest profile_completed status
@@ -77,13 +85,13 @@ export const authOptions: AuthOptions = {
           .select("profile_completed, role")
           .eq("email", token.email)
           .single();
-        
+
         if (data) {
           token.profile_completed = data.profile_completed;
           token.role = data.role;
         }
       }
-      
+
       return token;
     },
 
