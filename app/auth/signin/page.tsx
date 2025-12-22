@@ -26,8 +26,8 @@ export default function SignInPage() {
         <div className="grid w-full grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
           {/* Left: Branding */}
           <div className="hidden lg:flex flex-col space-y-6">
-            <div className="inline-block p-4 rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 w-fit mb-4">
-              <Logo variant="icon" size="xl" />
+            <div className="mb-4">
+              <Logo variant="full" size="2xl" />
             </div>
             <h1 className="text-5xl font-bold font-heading leading-tight text-white">
               Campus life, <br />

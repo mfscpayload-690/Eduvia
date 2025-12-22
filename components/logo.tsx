@@ -4,7 +4,7 @@ import Image from "next/image";
 
 interface LogoProps {
   variant?: "full" | "icon";
-  size?: "sm" | "md" | "lg" | "xl";
+  size?: "sm" | "md" | "lg" | "xl" | "2xl";
   className?: string;
   alt?: string;
 }
@@ -20,7 +20,8 @@ interface LogoProps {
  * - "sm": h-6 (24px - compact navbar on mobile)
  * - "md": h-8 (32px - standard navbar)
  * - "lg": h-10 (40px - larger displays)
- * - "xl": h-16 (64px - hero sections, login page)
+ * - "xl": h-16 (64px - large displays)
+ * - "2xl": h-24 (96px - hero sections, login page)
  */
 export function Logo({
   variant = "icon",
@@ -33,7 +34,8 @@ export function Logo({
     sm: "h-6",   // 24px - mobile navbar
     md: "h-8",   // 32px - desktop navbar  
     lg: "h-10",  // 40px - larger displays
-    xl: "h-16",  // 64px - hero/login
+    xl: "h-16",  // 64px - large displays
+    "2xl": "h-24", // 96px - hero/login
   };
 
   const sizeClass = sizeMap[size];

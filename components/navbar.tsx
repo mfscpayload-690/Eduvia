@@ -1,83 +1,196 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useSession, signIn, signOut } from "next-auth/react";
-import { Menu, LogOut, LogIn } from "lucide-react";
+import { Menu, LogOut, LogIn, X, Home, Sparkles, BookOpen, Clock, MapPin, Calendar, Heart, Settings, Shield, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ResponsiveLogo } from "@/components/logo";
 
+const mobileNavItemsBase = [
+  { href: "/dashboard", label: "Dashboard", icon: Home },
+  { href: "/eduvia-ai", label: "eduvia AI", icon: Sparkles },
+  { href: "/notes", label: "Course Notes", icon: BookOpen },
+  { href: "/timetable", label: "Timetable", icon: Clock },
+  { href: "/classfinder", label: "Classroom Finder", icon: MapPin },
+  { href: "/events", label: "Events", icon: Calendar },
+  { href: "/lostfound", label: "Lost & Found", icon: Heart },
+  { href: "/settings", label: "Profile", icon: Settings },
+];
+
 export function Navbar() {
   const { data: session } = useSession();
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const mobileNavItems = [
-    { href: "/dashboard", label: "Dashboard" },
-    { href: "/eduvia-ai", label: "eduvia AI" },
-    { href: "/notes", label: "Course Notes" },
-    { href: "/timetable", label: "Timetable" },
-    { href: "/classfinder", label: "Classroom Finder" },
-    { href: "/events", label: "Events" },
-    { href: "/lostfound", label: "Lost & Found" },
-    { href: "/settings", label: "Profile" },
-  ];
+  // Close menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
 
-  if (session?.user?.role === "admin") {
-    mobileNavItems.push({ href: "/admin", label: "Admin" });
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
+  const mobileNavItems = [...mobileNavItemsBase];
+  if (session?.user?.role === "admin" || session?.user?.role === "super_admin") {
+    mobileNavItems.push({ href: "/admin", label: "Admin", icon: Shield });
   }
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md px-4 py-3 md:px-6 transition-colors duration-300">
-      <div className="flex items-center justify-between">
-        {/* Logo / Brand - Responsive: Full text (desktop) + Icon (mobile) */}
-        <Link
-          href="/"
-          className="flex items-center gap-2 transition-opacity hover:opacity-80"
-        >
-          <ResponsiveLogo />
-        </Link>
+    <>
+      <nav className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md px-4 py-3 md:px-6 transition-colors duration-300">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <Link
+            href="/"
+            className="flex items-center gap-2 transition-opacity hover:opacity-80"
+          >
+            <ResponsiveLogo />
+          </Link>
 
-        {/* Right Section (theme + mobile menu) */}
-        <div className="flex items-center gap-3">
-          <div className="md:hidden">
-            <ThemeToggle />
+          {/* Right Section */}
+          <div className="flex items-center gap-3">
+            <div className="md:hidden">
+              <ThemeToggle />
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 text-muted-foreground hover:bg-neutral-100 dark:hover:bg-white/5 rounded-lg transition-colors hover:text-foreground"
+              aria-label="Toggle mobile menu"
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Desktop Auth Section */}
+          <div className="hidden md:flex items-center gap-4">
+            {session ? (
+              <>
+                <ThemeToggle />
+                <div className="flex flex-col items-end">
+                  <span className="text-sm font-medium text-foreground">{session.user?.name}</span>
+                  <span className="text-xs text-brand-600 dark:text-brand-400 capitalize">{session.user?.role}</span>
+                </div>
+                <Button
+                  onClick={() => signOut()}
+                  size="sm"
+                  variant="destructive"
+                  className="gap-2 shadow-lg hover:shadow-red-500/25 transition-all"
+                >
+                  <LogOut size={16} />
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <Button
+                onClick={() => signIn("google")}
+                size="sm"
+                className="gap-2 bg-gradient-brand hover:opacity-90 text-white border-0"
+              >
+                <LogIn size={16} />
+                Sign In
+              </Button>
+            )}
+          </div>
+        </div>
+      </nav>
+
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Mobile Menu Slide-out */}
+      <div className={`fixed top-0 right-0 z-50 h-full w-[280px] bg-background border-l border-border shadow-2xl transform transition-transform duration-300 ease-out md:hidden ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+        }`}>
+        {/* Menu Header */}
+        <div className="flex items-center justify-between p-4 border-b border-border">
+          <span className="font-semibold text-foreground">Menu</span>
           <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-muted-foreground hover:bg-neutral-100 dark:hover:bg-white/5 rounded-md transition-colors hover:text-foreground"
-            aria-label="Toggle mobile menu"
+            onClick={() => setMobileMenuOpen(false)}
+            className="p-2 text-muted-foreground hover:bg-neutral-100 dark:hover:bg-white/10 rounded-lg transition-colors"
           >
-            <Menu size={20} />
+            <X size={20} />
           </button>
         </div>
 
-        {/* Desktop Auth Section */}
-        <div className="hidden md:flex items-center gap-4">
-          {session ? (
-            <>
-              <ThemeToggle />
-              <div className="flex flex-col items-end">
-                <span className="text-sm font-medium text-foreground">{session.user?.name}</span>
-                <span className="text-xs text-brand-600 dark:text-brand-400 capitalize">{session.user?.role}</span>
+        {/* User Section */}
+        {session && (
+          <div className="p-4 border-b border-border">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-500 to-accent-500 flex items-center justify-center text-white">
+                <User size={18} />
               </div>
-              <Button
-                onClick={() => signOut()}
-                size="sm"
-                variant="destructive"
-                className="gap-2 shadow-lg hover:shadow-red-500/25 transition-all"
-              >
-                <LogOut size={16} />
-                Sign Out
-              </Button>
-            </>
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-foreground truncate">{session.user?.name}</p>
+                <p className="text-xs text-brand-500 capitalize">{session.user?.role?.replace("_", " ")}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Navigation Links */}
+        <div className="flex-1 overflow-y-auto py-2">
+          <div className="px-2 space-y-1">
+            {mobileNavItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname === item.href || pathname?.startsWith(item.href + "/");
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all ${isActive
+                      ? "bg-brand-500/10 text-brand-600 dark:text-brand-400"
+                      : "text-muted-foreground hover:bg-neutral-100 dark:hover:bg-white/5 hover:text-foreground"
+                    }`}
+                >
+                  <Icon size={18} className={isActive ? "text-brand-500" : ""} />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Bottom Action */}
+        <div className="p-4 border-t border-border">
+          {session ? (
+            <Button
+              onClick={() => {
+                signOut();
+                setMobileMenuOpen(false);
+              }}
+              variant="destructive"
+              className="w-full justify-center gap-2"
+            >
+              <LogOut size={16} />
+              Sign Out
+            </Button>
           ) : (
             <Button
-              onClick={() => signIn("google")}
-              size="sm"
-              className="gap-2 bg-gradient-brand hover:opacity-90 text-white border-0"
+              onClick={() => {
+                signIn("google");
+                setMobileMenuOpen(false);
+              }}
+              className="w-full gap-2 bg-gradient-brand hover:opacity-90 text-white border-0"
             >
               <LogIn size={16} />
               Sign In
@@ -85,55 +198,6 @@ export function Navbar() {
           )}
         </div>
       </div>
-
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="mt-4 space-y-2 md:hidden pb-4 border-t border-white/5 pt-4">
-          {mobileNavItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setMobileMenuOpen(false)}
-              className="block w-full px-4 py-3 rounded-lg text-sm font-medium text-neutral-400 hover:bg-white/5 hover:text-white transition-colors"
-            >
-              {item.label}
-            </Link>
-          ))}
-
-          {session ? (
-            <div className="pt-2 border-t border-white/5 mt-2 space-y-3">
-              <div className="px-2">
-                <div className="text-sm font-medium text-white">{session.user?.name}</div>
-                <div className="text-xs text-brand-400">{session.user?.role}</div>
-              </div>
-              <Button
-                onClick={() => {
-                  signOut();
-                  setMobileMenuOpen(false);
-                }}
-                size="sm"
-                variant="destructive"
-                className="w-full justify-start gap-2"
-              >
-                <LogOut size={16} />
-                Sign Out
-              </Button>
-            </div>
-          ) : (
-            <Button
-              onClick={() => {
-                signIn("google");
-                setMobileMenuOpen(false);
-              }}
-              size="sm"
-              className="w-full gap-2 bg-gradient-brand hover:opacity-90 text-white border-0 mt-4"
-            >
-              <LogIn size={16} />
-              Sign In
-            </Button>
-          )}
-        </div>
-      )}
-    </nav>
+    </>
   );
 }
