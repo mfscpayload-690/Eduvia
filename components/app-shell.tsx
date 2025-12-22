@@ -15,8 +15,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex min-h-screen flex-col md:flex-row">
-      <aside className="hidden w-64 border-r border-neutral-200 md:block dark:border-neutral-800">
+    <div className="flex min-h-screen flex-col md:flex-row bg-background transition-colors duration-300">
+      <aside className="hidden w-72 border-r border-border md:block sticky top-0 h-screen overflow-y-auto bg-background/50 backdrop-blur-xl z-30">
         <Sidebar />
       </aside>
       <div className="flex-1 flex flex-col">

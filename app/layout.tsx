@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
+import { Inter, Outfit } from "next/font/google";
 import { AppShell } from "@/components/app-shell";
 import { Providers } from "./providers";
 import "@/styles/globals.css";
 import { Analytics } from "@vercel/analytics/react";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 
 export const metadata: Metadata = {
   title: "eduvia",
@@ -26,7 +30,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className={`${inter.variable} ${outfit.variable} font-sans antialiased`}>
         <Providers>
           <AppShell>{children}</AppShell>
         </Providers>

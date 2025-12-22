@@ -45,9 +45,8 @@ function MessageBubble({ role, children }: { role: Role; children: React.ReactNo
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <div
-        className={`max-w-[92%] rounded-2xl px-4 py-3 shadow-sm text-sm leading-relaxed border transition-colors duration-200 ${
-          isUser ? "bg-blue-600 text-white border-blue-500/40" : "bg-neutral-800 text-neutral-100 border-neutral-700"
-        }`}
+        className={`max-w-[92%] rounded-2xl px-4 py-3 shadow-sm text-sm leading-relaxed border transition-colors duration-200 ${isUser ? "bg-blue-600 text-white border-blue-500/40" : "bg-neutral-800 text-neutral-100 border-neutral-700"
+          }`}
       >
         {children}
       </div>
@@ -134,7 +133,7 @@ function PromptSuggestions({ setInput, variant = "aside" }: { setInput: (v: stri
     "Explain binary search with a dry run",
   ];
 
-  const containerBase = variant === "aside" ? "flex-col border-l border-neutral-800 bg-neutral-900/40 p-6 space-y-4" : "space-y-3";
+  const containerBase = variant === "aside" ? "flex-col border-l border-white/5 bg-white/5 p-6 space-y-4" : "space-y-3";
 
   return variant === "aside" ? (
     <div className={`hidden lg:flex ${containerBase}`}>
@@ -267,16 +266,16 @@ export default function EduviaAIPage(): JSX.Element {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-neutral-100">
+    <div className="min-h-screen">
       <div className="mx-auto w-full max-w-6xl px-4 py-8 lg:py-12">
         <ChatHeader onReset={resetChat} />
 
-        <Card className="border-neutral-800 bg-neutral-900/60 backdrop-blur rounded-xl">
+        <Card className="glass-card border-white/5 rounded-2xl overflow-hidden">
           <CardContent className="p-0">
             {/* Desktop/large screens: chat + aside tips. Tablets/mobile: tips move below and are collapsible. */}
-            <div className="grid lg:grid-cols-[2fr_1fr] gap-0 lg:gap-6">
+            <div className="grid lg:grid-cols-[2fr_1fr] gap-0">
               {/* Chat column */}
-              <div className="flex flex-col min-h-[65vh]">
+              <div className="flex flex-col min-h-[65vh] relative">
                 <ChatMessages history={history} endRef={endRef} />
                 <ChatInput input={input} setInput={setInput} canSend={canSend} sending={sending} send={send} error={error} />
                 {/* Tips below chat for tablet/mobile */}

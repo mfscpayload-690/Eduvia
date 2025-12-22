@@ -2,64 +2,113 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  @apply border-neutral-800;
+@layer base {
+  :root {
+    /* Soft, modern light mode foundation */
+    --background: 210 40% 98%;
+    /* Slate 50 - Softer than pure white */
+    --foreground: 222.2 84% 4.9%;
+    /* Deep Slate for text */
+
+    --card: 0 0% 100%;
+    /* Pure white cards for pop */
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 189 94% 43%;
+    /* Cyan 500 - Brand anchor */
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 168 84% 39%;
+    /* Emerald */
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 90%;
+    /* Softer borders */
+    --input: 214.3 31.8% 90%;
+    --ring: 189 94% 43%;
+    --radius: 0.75rem;
+  }
+
+
+  .dark {
+    --background: 224 71% 4%;
+    /* Slate 950 #020617 */
+    --foreground: 210 40% 98%;
+    --card: 224 71% 4%;
+    --card-foreground: 210 40% 98%;
+    --popover: 224 71% 4%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 189 94% 43%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 168 84% 39%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 189 94% 43%;
+  }
 }
 
-html {
-  @apply scroll-smooth;
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading tracking-tight;
+  }
 }
 
-body {
-  @apply bg-neutral-50 text-neutral-950 transition-colors duration-300;
-}
+@layer utilities {
+  .glass-card {
+    /* Light mode: Clean white card with soft shadow */
+    @apply bg-white border border-neutral-200 shadow-sm transition-all;
+  }
 
-.dark body {
-  @apply bg-neutral-950 text-neutral-100;
-}
+  .dark .glass-card {
+    /* Dark mode: Frosted glass */
+    @apply bg-white/5 backdrop-blur-lg border-white/10 shadow-xl border;
+  }
 
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  @apply w-2 h-2;
-}
+  .glass-panel {
+    @apply bg-neutral-50/80 backdrop-blur-md border-b border-neutral-200;
+  }
 
-::-webkit-scrollbar-track {
-  @apply bg-neutral-100;
-}
+  .dark .glass-panel {
+    @apply bg-neutral-900/50 border-neutral-800/50;
+  }
 
-::-webkit-scrollbar-thumb {
-  @apply bg-neutral-300 rounded hover:bg-neutral-400;
-}
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-600 to-accent-600 dark:from-brand-400 dark:to-accent-400;
+  }
 
-/* Smooth transitions */
-a,
-button {
-  @apply transition-colors duration-200;
-}
-
-/* Focus states for accessibility */
-button:focus-visible,
-a:focus-visible,
-input:focus-visible {
-  @apply outline-none ring-2 ring-blue-500 ring-offset-2 ring-offset-neutral-950;
-}
-
-.dark ::-webkit-scrollbar-track {
-  @apply bg-neutral-900;
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  @apply bg-neutral-700 hover:bg-neutral-600;
-}
-
-.dark button:focus-visible,
-.dark a:focus-visible,
-.dark input:focus-visible {
-  @apply ring-offset-neutral-950;
-}
-
-button:focus-visible,
-a:focus-visible,
-input:focus-visible {
-  @apply ring-offset-neutral-50;
+  .bg-gradient-brand {
+    @apply bg-gradient-to-r from-brand-500 to-accent-500 text-white;
+  }
 }

@@ -81,8 +81,8 @@ export function Sidebar() {
   });
 
   return (
-    <div className="p-4 space-y-2 bg-white dark:bg-neutral-950">
-      <nav className="space-y-1">
+    <div className="flex h-full flex-col gap-4 p-4">
+      <nav className="grid gap-2">
         {filteredNavItems.map((item) => {
           const isActive = pathname.startsWith(item.href);
 
@@ -90,11 +90,10 @@ export function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                isActive
-                  ? "bg-blue-600 text-white"
-                  : "text-neutral-400 hover:bg-neutral-800 hover:text-neutral-100"
-              }`}
+              className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 ${isActive
+                  ? "bg-gradient-brand text-white shadow-lg shadow-brand-500/25"
+                  : "text-muted-foreground hover:bg-neutral-200/50 dark:hover:bg-white/5 hover:text-foreground hover:scale-105"
+                }`}
             >
               {item.icon}
               {item.label}
