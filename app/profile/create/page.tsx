@@ -127,7 +127,7 @@ export default function CreateProfile() {
         <CardHeader>
           <CardTitle className="text-2xl text-neutral-100">Complete Your Profile</CardTitle>
           <CardDescription className="text-neutral-400">
-            Welcome to eduvia! Please fill in your details to get started.
+            Welcome! Please fill in your details to get started.
           </CardDescription>
         </CardHeader>
         <CardContent>

@@ -80,7 +80,7 @@ export default function DashboardPage() {
       {/* Welcome Section */}
       <div>
         <h1 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100">Welcome, {session.user?.name}!</h1>
-        <p className="text-neutral-600 dark:text-neutral-400 mt-2">Get started with eduvia</p>
+        <p className="text-neutral-600 dark:text-neutral-400 mt-2">Get started</p>
       </div>
 
       {/* Quick Links Grid */}

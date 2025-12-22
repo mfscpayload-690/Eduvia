@@ -7,6 +7,11 @@ import { Analytics } from "@vercel/analytics/react";
 export const metadata: Metadata = {
   title: "eduvia",
   description: "Your all-in-one campus companion",
+  icons: {
+    icon: "/assets/eduvia_favicon.png",
+    shortcut: "/assets/eduvia_favicon.png",
+    apple: "/assets/eduvia_favicon.png",
+  },
 };
 
 export const viewport = {

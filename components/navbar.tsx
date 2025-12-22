@@ -6,6 +6,7 @@ import { Menu, LogOut, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { ResponsiveLogo } from "@/components/logo";
 
 export function Navbar() {
   const { data: session } = useSession();
@@ -27,16 +28,14 @@ export function Navbar() {
   }
 
   return (
-    <nav className="border-b border-neutral-200 bg-white px-4 py-3 md:px-6 dark:border-neutral-800 dark:bg-neutral-900">
+    <nav className="border-b border-neutral-200 bg-white px-4 py-2 md:px-6 dark:border-neutral-800 dark:bg-neutral-900">
       <div className="flex items-center justify-between">
-        {/* Logo / Brand */}
+        {/* Logo / Brand - Responsive: Full text (desktop) + Icon (mobile) */}
         <Link
           href="/"
-          className="flex items-center gap-2 text-lg font-bold text-blue-500 hover:text-blue-400 transition-colors"
+          className="flex items-center gap-2 transition-opacity hover:opacity-80"
         >
-          {/* Logo placeholder - replace with actual logo */}
-          <div className="h-8 w-8 rounded-md border border-blue-500/30 bg-blue-500/10" aria-label="eduvia logo" />
-          eduvia
+          <ResponsiveLogo size="lg" />
         </Link>
 
         {/* Right Section (theme + mobile menu) */}
