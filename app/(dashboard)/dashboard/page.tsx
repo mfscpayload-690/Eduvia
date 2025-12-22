@@ -94,7 +94,7 @@ export default function DashboardPage() {
           Welcome back, <span className="text-gradient">{session.user?.name}</span>
         </h1>
         <p className="text-neutral-400 max-w-lg">
-          Here's what's happening on campus today.
+          Here&apos;s what&apos;s happening on campus today.
         </p>
       </div>
 
