@@ -10,9 +10,9 @@ export async function GET() {
   try {
     const session = await requireAuth();
 
-    // Admins see everything; students see notes for their course only
+    // Admins and super_admins see everything; students see notes for their course only
     let notes;
-    if (session.user.role === "admin") {
+    if (session.user.role === "admin" || session.user.role === "super_admin") {
       notes = await getNotes();
     } else {
       const user = await getUserByEmail(session.user.email);
