@@ -35,6 +35,7 @@ export default function CreateProfile() {
   const [facultyRequestSent, setFacultyRequestSent] = useState(false);
 
   const [formData, setFormData] = useState({
+    name: "",
     college: DEFAULT_COLLEGE,
     mobile: "",
     semester: "",
@@ -69,9 +70,9 @@ export default function CreateProfile() {
     setSuccess(false);
 
     try {
-      if (!formData.mobile || !formData.semester ||
+      if (!formData.name || !formData.mobile || !formData.semester ||
         !formData.year_of_study || !formData.branch || !formData.program_type) {
-        setError("Please fill in all fields");
+        setError("Please fill in all required fields");
         setLoading(false);
         return;
       }
@@ -82,6 +83,7 @@ export default function CreateProfile() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          name: formData.name,
           college: formData.college,
           mobile: formData.mobile,
           semester: parseInt(formData.semester),
@@ -166,6 +168,22 @@ export default function CreateProfile() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Full Name */}
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                Full Name <span className="text-red-500">*</span>
+              </label>
+              <input
+                id="name"
+                type="text"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                placeholder="Enter your full name"
+                className="w-full px-4 py-2 bg-white border border-neutral-300 rounded-lg text-neutral-900 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100"
+                required
+              />
+            </div>
+
             {/* College (Pre-set) */}
             <div>
               <label htmlFor="college" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
