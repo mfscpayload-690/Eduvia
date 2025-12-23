@@ -88,17 +88,41 @@ export async function getNotesByCourse(course: string): Promise<Note[]> {
   return data || [];
 }
 
-export async function getNotesByCourseSemYear(
-  course: string,
+/**
+ * Get notes filtered by user's branch, semester, and year
+ * Notes match if:
+ * - branches is empty (all branches) OR user's branch is in branches array
+ * - semesters is empty (all semesters) OR user's semester is in semesters array
+ * - year_of_study is null OR matches user's year
+ */
+export async function getNotesByUserProfile(
+  branch: string,
   semester?: number,
   year_of_study?: number
 ): Promise<Note[]> {
-  let query = supabase.from("notes").select("*").eq("course", course);
-  if (typeof semester === "number") query = query.eq("semester", semester);
-  if (typeof year_of_study === "number") query = query.eq("year_of_study", year_of_study);
-  const { data, error } = await query.order("created_at", { ascending: false });
-  if (error) throw new Error(`Failed to fetch filtered notes: ${error.message}`);
-  return data || [];
+  // Get all notes first, then filter in JS since Supabase array contains is tricky
+  const { data, error } = await supabase
+    .from("notes")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) throw new Error(`Failed to fetch notes: ${error.message}`);
+  if (!data) return [];
+
+  // Filter notes based on user's profile
+  return data.filter(note => {
+    // Check branch: match if branches is empty/null OR user's branch is included
+    const branchMatch = !note.branches || note.branches.length === 0 || note.branches.includes(branch);
+
+    // Check semester: match if semesters is empty/null OR user's semester is included
+    const semesterMatch = !note.semesters || note.semesters.length === 0 ||
+      (typeof semester === "number" && note.semesters.includes(semester));
+
+    // Check year: match if year_of_study is null OR matches user's year
+    const yearMatch = !note.year_of_study || note.year_of_study === year_of_study;
+
+    return branchMatch && semesterMatch && yearMatch;
+  });
 }
 
 export async function getNoteById(id: string): Promise<Note | null> {

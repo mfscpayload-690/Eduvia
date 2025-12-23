@@ -88,7 +88,7 @@ export interface Note {
   file_id: string; // Google Drive file ID
   drive_url: string; // Direct download URL
   branches?: string[]; // Array of branch names this note applies to
-  semester?: number;
+  semesters?: number[]; // Array of semesters this note applies to
   year_of_study?: number;
   created_by: string; // User ID
   created_at: Date;
@@ -100,7 +100,7 @@ export interface CreateNoteDTO {
   file_id: string;
   drive_url: string;
   branches?: string[];
-  semester?: number;
+  semesters?: number[];
   year_of_study?: number;
 }
 

@@ -49,9 +49,9 @@ export async function PATCH(
 
     const { id } = params;
     const body = await req.json();
-    const { title, course, file_id, drive_url, semester, year_of_study } = body;
+    const { title, course, file_id, drive_url, branches, semesters, year_of_study } = body;
 
-    if (!title && !course && !file_id && !drive_url && semester === undefined && year_of_study === undefined) {
+    if (!title && !course && !file_id && !drive_url && branches === undefined && semesters === undefined && year_of_study === undefined) {
       return NextResponse.json(
         { error: "At least one field is required" },
         { status: 400 }
@@ -63,7 +63,8 @@ export async function PATCH(
     if (course) updateData.course = course;
     if (file_id) updateData.file_id = file_id;
     if (drive_url) updateData.drive_url = drive_url;
-    if (semester !== undefined) updateData.semester = semester;
+    if (branches !== undefined) updateData.branches = branches;
+    if (semesters !== undefined) updateData.semesters = semesters;
     if (year_of_study !== undefined) updateData.year_of_study = year_of_study;
 
     const note = await updateNote(id, updateData);
