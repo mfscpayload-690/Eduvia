@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-type BranchOfStudy = 
+type BranchOfStudy =
   | "Computer Science and Engineering(CS)"
   | "Computer Science and Engineering(CYBERSECURITY)"
   | "Electronics and Communication Engineering (EC)"
@@ -35,6 +35,7 @@ export default function Settings() {
   const [success, setSuccess] = useState("");
 
   const [formData, setFormData] = useState({
+    name: "",
     college: DEFAULT_COLLEGE,
     mobile: "",
     semester: "",
@@ -54,10 +55,11 @@ export default function Settings() {
       try {
         const response = await fetch("/api/profile");
         if (!response.ok) throw new Error("Failed to fetch profile");
-        
+
         const data = await response.json();
         if (data.user) {
           setFormData({
+            name: data.user.name || session?.user?.name || "",
             college: DEFAULT_COLLEGE,
             mobile: data.user.mobile || "",
             semester: data.user.semester?.toString() || "",
@@ -85,9 +87,9 @@ export default function Settings() {
     setSuccess("");
 
     try {
-      if (!formData.mobile || !formData.semester || 
-          !formData.year_of_study || !formData.branch || !formData.program_type) {
-        setError("Please fill in all fields");
+      if (!formData.name || !formData.mobile || !formData.semester ||
+        !formData.year_of_study || !formData.branch || !formData.program_type) {
+        setError("Please fill in all required fields");
         setLoading(false);
         return;
       }
@@ -96,6 +98,7 @@ export default function Settings() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          name: formData.name,
           college: formData.college,
           mobile: formData.mobile,
           semester: parseInt(formData.semester),
@@ -112,7 +115,7 @@ export default function Settings() {
 
       // Update session to reflect profile completion
       await update();
-      
+
       setSuccess("Profile updated successfully!");
       setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
@@ -185,6 +188,22 @@ export default function Settings() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Name */}
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                  Full Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="Enter your full name"
+                  className="w-full px-4 py-2 bg-white border border-neutral-300 rounded-lg text-neutral-900 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100"
+                  required
+                />
+              </div>
+
               {/* College (Pre-set) */}
               <div>
                 <label htmlFor="college" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">

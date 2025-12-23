@@ -34,6 +34,7 @@ export interface User {
 }
 
 export interface UpdateProfileDTO {
+  name?: string;
   college: string;
   mobile: string;
   semester: number;

@@ -15,8 +15,8 @@ export async function POST(req: Request) {
     const body: UpdateProfileDTO = await req.json();
 
     // Validate required fields
-    if (!body.college || !body.mobile || !body.semester || 
-        !body.year_of_study || !body.branch || !body.program_type) {
+    if (!body.college || !body.mobile || !body.semester ||
+      !body.year_of_study || !body.branch || !body.program_type) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 });
     }
 
@@ -24,6 +24,7 @@ export async function POST(req: Request) {
     const { data, error } = await supabase
       .from("users")
       .update({
+        name: body.name || undefined,
         college: body.college,
         mobile: body.mobile,
         semester: body.semester,
@@ -41,9 +42,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Failed to update profile" }, { status: 500 });
     }
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       message: "Profile updated successfully",
-      user: data 
+      user: data
     });
   } catch (error) {
     console.error("Profile update error:", error);

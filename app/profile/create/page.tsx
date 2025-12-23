@@ -43,16 +43,30 @@ export default function CreateProfile() {
     program_type: "" as ProgramType | ""
   });
 
+  const [success, setSuccess] = useState(false);
+
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/auth/signin");
     }
   }, [status, router]);
 
+  // Handle redirect after success
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => {
+        router.replace("/dashboard");
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+    return undefined;
+  }, [success, router]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
+    setSuccess(false);
 
     try {
       if (!formData.mobile || !formData.semester ||
@@ -106,22 +120,18 @@ export default function CreateProfile() {
         }
       }
 
-      console.log("Profile created successfully, updating session...");
+      console.log("Profile created successfully!");
 
       // Update session to reflect profile completion
-      const updateResult = await update();
-      console.log("Session updated:", updateResult);
+      await update();
 
-      console.log("Redirecting to dashboard...");
-      // Redirect to dashboard
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 500);
+      // Set success to trigger redirect
+      setSuccess(true);
+      setLoading(false);
 
     } catch (err) {
       console.error("Error:", err);
       setError(err instanceof Error ? err.message : "An error occurred");
-    } finally {
       setLoading(false);
     }
   };
@@ -302,6 +312,16 @@ export default function CreateProfile() {
               </div>
             )}
 
+            {/* Profile saved success message */}
+            {success && (
+              <div className="p-4 bg-green-500/10 border border-green-500/30 rounded-lg text-green-600 dark:text-green-400 text-sm flex items-center gap-2">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span className="font-medium">Profile saved successfully! Redirecting to dashboard...</span>
+              </div>
+            )}
+
             {error && (
               <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm">
                 {error}
@@ -310,13 +330,20 @@ export default function CreateProfile() {
 
             <Button
               type="submit"
-              disabled={loading}
+              disabled={loading || success}
               className="w-full bg-gradient-brand hover:opacity-90 text-white py-2.5 gap-2"
             >
               {loading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
                   Saving...
+                </>
+              ) : success ? (
+                <>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Profile Saved!
                 </>
               ) : (
                 "Complete Profile"
