@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ResponsiveLogo } from "@/components/logo";
+import { NotificationCenter } from "@/components/notifications/notification-center";
 
 const mobileNavItemsBase = [
   { href: "/dashboard", label: "Dashboard", icon: Home },
@@ -64,6 +65,9 @@ export function Navbar() {
             <div className="md:hidden">
               <ThemeToggle />
             </div>
+            <div className="md:hidden">
+              {session && <NotificationCenter />}
+            </div>
 
             {/* Mobile Menu Button */}
             <button
@@ -79,6 +83,7 @@ export function Navbar() {
           <div className="hidden md:flex items-center gap-4">
             {session ? (
               <>
+                <NotificationCenter />
                 <ThemeToggle />
                 <div className="flex flex-col items-end">
                   <span className="text-sm font-medium text-foreground">{session.user?.name}</span>
@@ -158,8 +163,8 @@ export function Navbar() {
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
                   className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all ${isActive
-                      ? "bg-brand-500/10 text-brand-600 dark:text-brand-400"
-                      : "text-muted-foreground hover:bg-neutral-100 dark:hover:bg-white/5 hover:text-foreground"
+                    ? "bg-brand-500/10 text-brand-600 dark:text-brand-400"
+                    : "text-muted-foreground hover:bg-neutral-100 dark:hover:bg-white/5 hover:text-foreground"
                     }`}
                 >
                   <Icon size={18} className={isActive ? "text-brand-500" : ""} />
