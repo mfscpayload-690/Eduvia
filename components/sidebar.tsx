@@ -9,9 +9,10 @@ import {
   MapPin,
   Calendar,
   Heart,
-  Settings,
+  User,
   Sparkles,
   BarChart3,
+  Shield,
 } from "lucide-react";
 
 interface NavItem {
@@ -67,12 +68,12 @@ const navItems: NavItem[] = [
   {
     href: "/settings",
     label: "Profile",
-    icon: <Settings size={20} />,
+    icon: <User size={20} />,
   },
   {
     href: "/admin",
     label: "Admin",
-    icon: <Settings size={20} />,
+    icon: <Shield size={20} />,
     adminOnly: true,
   },
 ];
@@ -82,10 +83,7 @@ export function Sidebar() {
   const { data: session } = useSession();
 
   const userRole = session?.user?.role;
-  const userEmail = session?.user?.email?.toLowerCase();
-  const SUPER_ADMIN_EMAIL = "techiez690@gmail.com";
-
-  const isSuperAdmin = userEmail === SUPER_ADMIN_EMAIL;
+  const isSuperAdmin = userRole === "super_admin";
   const isAdmin = userRole === "admin" || isSuperAdmin;
 
   const filteredNavItems = navItems.filter((item) => {

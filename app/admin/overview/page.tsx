@@ -9,9 +9,12 @@ import {
     UserCheck,
     Clock,
     ArrowUpRight,
-    BarChart3,
     ShieldCheck,
-    AlertCircle
+    AlertCircle,
+    Mail,
+    Phone,
+    Shield,
+    User as UserIcon
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -27,24 +30,41 @@ interface AdminStats {
     recentSignups: number;
 }
 
+interface User {
+    id: string;
+    name: string;
+    email: string;
+    mobile: string;
+    role: string;
+    branch: string;
+    semester: number;
+    year_of_study: number;
+    created_at: string;
+}
+
 export default function AdminOverviewPage() {
     const { data: session, status } = useSession();
     const [stats, setStats] = useState<AdminStats | null>(null);
+    const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    const SUPER_ADMIN_EMAIL = "techiez690@gmail.com";
-    const isSuperAdmin = session?.user?.email?.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase();
+    const isSuperAdmin = session?.user?.role === "super_admin";
 
     useEffect(() => {
-        async function fetchStats() {
+        async function fetchData() {
             if (!isSuperAdmin) return;
 
             try {
-                const res = await fetch("/api/admin/stats");
-                const json = await res.json();
-                if (!res.ok) throw new Error(json.error || "Failed to load stats");
-                setStats(json.data);
+                // Fetch stats
+                const statsRes = await fetch("/api/admin/stats");
+                const statsJson = await statsRes.json();
+                if (statsRes.ok) setStats(statsJson.data);
+
+                // Fetch users
+                const usersRes = await fetch("/api/admin/users");
+                const usersJson = await usersRes.json();
+                if (usersRes.ok) setUsers(usersJson.users || []);
             } catch (err: any) {
                 setError(err.message);
             } finally {
@@ -53,7 +73,7 @@ export default function AdminOverviewPage() {
         }
 
         if (status === "authenticated") {
-            fetchStats();
+            fetchData();
         }
     }, [status, isSuperAdmin]);
 
@@ -69,7 +89,7 @@ export default function AdminOverviewPage() {
                 </div>
                 <h1 className="text-2xl font-bold text-neutral-900 dark:text-white mb-2">Access Denied</h1>
                 <p className="text-neutral-500 dark:text-neutral-400 max-w-md mx-auto">
-                    This dashboard is reserved for the Super Admin only. Admins and Faculty do not have permission to view internal analytics.
+                    This dashboard is reserved for the Super Admin only.
                 </p>
                 <Link href="/dashboard" className="mt-6">
                     <Button variant="outline">Back to Dashboard</Button>
@@ -77,6 +97,15 @@ export default function AdminOverviewPage() {
             </div>
         );
     }
+
+    const getRoleBadge = (role: string) => {
+        const colors: Record<string, string> = {
+            super_admin: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
+            admin: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
+            student: "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-400"
+        };
+        return colors[role] || colors.student;
+    };
 
     return (
         <div className="p-6 md:p-8 space-y-8 max-w-7xl mx-auto">
@@ -87,7 +116,7 @@ export default function AdminOverviewPage() {
                         System Overview
                     </h1>
                     <p className="text-neutral-500 dark:text-neutral-400 mt-1">
-                        Real-time analytics and platform health for Eduvia.
+                        Real-time analytics and user management for Eduvia.
                     </p>
                 </div>
                 <div className="flex gap-3">
@@ -114,7 +143,6 @@ export default function AdminOverviewPage() {
                             icon={<Users className="w-5 h-5" />}
                             description={`${stats?.recentSignups || 0} new this week`}
                             loading={loading}
-                            trend="+12%"
                         />
                         <StatCard
                             title="Faculty Members"
@@ -172,33 +200,100 @@ export default function AdminOverviewPage() {
                             </CardContent>
                         </Card>
 
-                        {/* Growth Chart Placeholder */}
+                        {/* User Stats Summary */}
                         <Card className="lg:col-span-2 glass-card">
                             <CardHeader>
                                 <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                                    <BarChart3 className="w-4 h-4 text-brand-500" />
-                                    Growth Trajectory
+                                    <Users className="w-4 h-4 text-brand-500" />
+                                    User Breakdown
                                 </CardTitle>
                             </CardHeader>
-                            <CardContent className="p-0">
-                                <div className="h-[200px] w-full flex items-end justify-between px-8 pb-4">
-                                    {[40, 60, 45, 70, 85, 65, 95].map((h, i) => (
-                                        <div key={i} className="w-8 rounded-t-lg bg-gradient-to-t from-brand-500/20 to-brand-500 transition-all hover:opacity-80 cursor-pointer" style={{ height: `${h}%` }}></div>
-                                    ))}
-                                </div>
-                                <div className="flex justify-between px-8 py-2 text-[10px] text-neutral-500 border-t border-border/50 bg-neutral-50/50 dark:bg-white/5">
-                                    <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                            <CardContent className="p-6">
+                                <div className="grid grid-cols-3 gap-4 text-center">
+                                    <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-xl">
+                                        <Shield className="w-6 h-6 text-purple-500 mx-auto mb-2" />
+                                        <div className="text-2xl font-bold text-purple-600">{users.filter(u => u.role === 'super_admin').length}</div>
+                                        <div className="text-xs text-neutral-500">Super Admin</div>
+                                    </div>
+                                    <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+                                        <UserCheck className="w-6 h-6 text-blue-500 mx-auto mb-2" />
+                                        <div className="text-2xl font-bold text-blue-600">{users.filter(u => u.role === 'admin').length}</div>
+                                        <div className="text-xs text-neutral-500">Faculty</div>
+                                    </div>
+                                    <div className="p-4 bg-neutral-50 dark:bg-neutral-800 rounded-xl">
+                                        <UserIcon className="w-6 h-6 text-neutral-500 mx-auto mb-2" />
+                                        <div className="text-2xl font-bold text-neutral-600 dark:text-neutral-300">{users.filter(u => u.role === 'student').length}</div>
+                                        <div className="text-xs text-neutral-500">Students</div>
+                                    </div>
                                 </div>
                             </CardContent>
                         </Card>
                     </div>
+
+                    {/* User List */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                                <Users className="w-4 h-4 text-brand-500" />
+                                All Users ({users.length})
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-0">
+                            {loading ? (
+                                <div className="p-8 text-center text-neutral-500">Loading users...</div>
+                            ) : users.length === 0 ? (
+                                <div className="p-8 text-center text-neutral-500">No users found</div>
+                            ) : (
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-sm">
+                                        <thead className="bg-neutral-50 dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-700">
+                                            <tr>
+                                                <th className="px-4 py-3 text-left font-semibold">Name</th>
+                                                <th className="px-4 py-3 text-left font-semibold">Email</th>
+                                                <th className="px-4 py-3 text-left font-semibold">Mobile</th>
+                                                <th className="px-4 py-3 text-left font-semibold">Role</th>
+                                                <th className="px-4 py-3 text-left font-semibold">Branch</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-neutral-200 dark:divide-neutral-700">
+                                            {users.map((user) => (
+                                                <tr key={user.id} className="hover:bg-neutral-50 dark:hover:bg-neutral-900/50">
+                                                    <td className="px-4 py-3 font-medium">{user.name || "—"}</td>
+                                                    <td className="px-4 py-3">
+                                                        <div className="flex items-center gap-1 text-neutral-600 dark:text-neutral-400">
+                                                            <Mail className="w-3 h-3" />
+                                                            {user.email}
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-4 py-3">
+                                                        <div className="flex items-center gap-1 text-neutral-600 dark:text-neutral-400">
+                                                            <Phone className="w-3 h-3" />
+                                                            {user.mobile || "—"}
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-4 py-3">
+                                                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getRoleBadge(user.role)}`}>
+                                                            {user.role}
+                                                        </span>
+                                                    </td>
+                                                    <td className="px-4 py-3 text-neutral-600 dark:text-neutral-400 max-w-[200px] truncate">
+                                                        {user.branch || "—"}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </CardContent>
+                    </Card>
                 </>
             )}
         </div>
     );
 }
 
-function StatCard({ title, value, icon, description, loading, trend, color = "brand" }: any) {
+function StatCard({ title, value, icon, description, loading, color = "brand" }: any) {
     const colors: any = {
         brand: "text-brand-600 bg-brand-50 dark:bg-brand-500/10",
         blue: "text-blue-600 bg-blue-50 dark:bg-blue-500/10",
@@ -213,11 +308,6 @@ function StatCard({ title, value, icon, description, loading, trend, color = "br
                     <div className={`p-2 rounded-xl ${colors[color]} group-hover:scale-110 transition-transform`}>
                         {icon}
                     </div>
-                    {trend && (
-                        <span className="text-[10px] font-bold text-green-500 bg-green-500/10 px-2 py-0.5 rounded-full">
-                            {trend}
-                        </span>
-                    )}
                 </div>
                 <div className="mt-4 space-y-1">
                     <p className="text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">{title}</p>
