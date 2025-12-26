@@ -40,7 +40,7 @@ const DEFAULT_WEEKDAY_SLOTS: TimeSlot[] = [
   { period: 1, start_time: "09:00", end_time: "10:00" },
   { period: 2, start_time: "10:10", end_time: "11:10" },
   { period: 3, start_time: "11:10", end_time: "12:10" },
-  { period: 4, start_time: "13:10", end_time: "14:00" },
+  { period: 4, start_time: "13:00", end_time: "14:00" },
   { period: 5, start_time: "14:00", end_time: "15:00" },
   { period: 6, start_time: "15:00", end_time: "16:00" },
 ];
@@ -192,7 +192,7 @@ export default function AdminTimetablePage() {
         scheduleConfig: {
           weekdaySlots: DEFAULT_WEEKDAY_SLOTS,
           fridaySlots: DEFAULT_FRIDAY_SLOTS,
-          weekdayLunch: "12:10 – 13:10",
+          weekdayLunch: "12:10 – 13:00",
           fridayLunch: "12:30 – 14:00",
         },
         schedule,
@@ -306,7 +306,7 @@ export default function AdminTimetablePage() {
           <div className="mb-8">
             <div className="flex items-center justify-between mb-3 bg-neutral-100 dark:bg-neutral-800 px-4 py-2 rounded-lg">
               <h3 className="text-md font-bold">Monday - Thursday</h3>
-              <span className="text-xs text-neutral-500">Lunch: 12:10 – 13:10</span>
+              <span className="text-xs text-neutral-500">Lunch: 12:10 – 13:00</span>
             </div>
 
             <div className="overflow-x-auto">

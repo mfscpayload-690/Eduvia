@@ -136,7 +136,7 @@ export default function TimetablePage() {
         <CardContent className="p-4">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-md font-bold">Monday - Thursday</h2>
-            <span className="text-xs text-neutral-500">Lunch: {timetable.schedule_config?.weekdayLunch || "12:10 – 13:10"}</span>
+            <span className="text-xs text-neutral-500">Lunch: {timetable.schedule_config?.weekdayLunch || "12:10 – 13:00"}</span>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full border-collapse border border-neutral-300 dark:border-neutral-700 text-sm">
