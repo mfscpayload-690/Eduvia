@@ -46,7 +46,7 @@ export const authOptions: AuthOptions = {
 
         const emailLower = user.email.toLowerCase().trim();
 
-        // Check if this user is the super admin (from environment variable)
+        // Check if this user is the super admin (from env variable only)
         const superAdminEmail = process.env.SUPER_ADMIN_EMAIL?.toLowerCase().trim();
         if (superAdminEmail && emailLower === superAdminEmail && dbUser.role !== "super_admin") {
           await updateUserRole(user.email, "super_admin");

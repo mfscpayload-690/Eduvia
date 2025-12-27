@@ -41,7 +41,8 @@ export default function CreateProfile() {
     semester: "",
     year_of_study: "",
     branch: "" as BranchOfStudy | "",
-    program_type: "" as ProgramType | ""
+    program_type: "" as ProgramType | "",
+    division: "" // CS1 or CS2 for CS branch
   });
 
   const [success, setSuccess] = useState(false);
@@ -88,7 +89,10 @@ export default function CreateProfile() {
           mobile: formData.mobile,
           semester: parseInt(formData.semester),
           year_of_study: parseInt(formData.year_of_study),
-          branch: formData.branch,
+          // Combine branch + division for CS students
+          branch: formData.branch === "Computer Science and Engineering(CS)" && formData.division
+            ? `${formData.branch}-${formData.division}`
+            : formData.branch,
           program_type: formData.program_type
         })
       });
@@ -248,6 +252,26 @@ export default function CreateProfile() {
                 ))}
               </select>
             </div>
+
+            {/* Division Selection (CS only) */}
+            {formData.branch === "Computer Science and Engineering(CS)" && (
+              <div>
+                <label htmlFor="division" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                  Division <span className="text-red-500">*</span>
+                </label>
+                <select
+                  id="division"
+                  value={formData.division}
+                  onChange={(e) => setFormData({ ...formData, division: e.target.value })}
+                  className="w-full px-4 py-2 bg-white border border-neutral-300 rounded-lg text-neutral-900 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100"
+                  required
+                >
+                  <option value="">Select your division</option>
+                  <option value="CS1">CS1</option>
+                  <option value="CS2">CS2</option>
+                </select>
+              </div>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Year of Study */}

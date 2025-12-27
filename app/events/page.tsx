@@ -42,6 +42,37 @@ export default function EventsPage() {
     });
   };
 
+  const formatDateRange = (start: Date | string, end: Date | string) => {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    // Check if it's the same day
+    const isSameDay = startDate.toDateString() === endDate.toDateString();
+
+    if (isSameDay) {
+      return formatDate(start);
+    }
+
+    // Multi-day event - show range
+    const startFormatted = startDate.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    });
+    const endFormatted = endDate.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+
+    return `${startFormatted} - ${endFormatted}`;
+  };
+
+  const isMultiDayEvent = (start: Date | string, end: Date | string) => {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    return startDate.toDateString() !== endDate.toDateString();
+  };
+
   return (
     <div className="space-y-6 p-4 md:p-8">
       <div>
@@ -95,14 +126,16 @@ export default function EventsPage() {
                 <div className="flex flex-col gap-2 text-sm">
                   <div className="flex items-center gap-2 text-neutral-600 dark:text-neutral-300">
                     <Calendar className="w-4 h-4 text-blue-500" />
-                    <span>{formatDate(event.starts_at)}</span>
+                    <span>{formatDateRange(event.starts_at, event.ends_at)}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-neutral-600 dark:text-neutral-300">
-                    <Clock className="w-4 h-4 text-blue-500" />
-                    <span>
-                      {formatTime(event.starts_at)} - {formatTime(event.ends_at)}
-                    </span>
-                  </div>
+                  {!isMultiDayEvent(event.starts_at, event.ends_at) && (
+                    <div className="flex items-center gap-2 text-neutral-600 dark:text-neutral-300">
+                      <Clock className="w-4 h-4 text-blue-500" />
+                      <span>
+                        {formatTime(event.starts_at)} - {formatTime(event.ends_at)}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>

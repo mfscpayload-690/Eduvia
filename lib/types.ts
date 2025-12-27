@@ -161,6 +161,7 @@ export interface LostFoundItem {
   description: string;
   status: LostFoundStatus;
   contact: string; // Email or phone
+  user_id: string;
   created_at: Date;
 }
 
@@ -193,7 +194,7 @@ export interface ListResponse<T> {
 // ============================================================================
 
 export interface ChatMessage {
-  role: "user" | "assistant";
+  role: "user" | "assistant" | "system";
   content: string;
 }
 

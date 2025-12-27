@@ -37,6 +37,32 @@ export async function requireAdmin(): Promise<Session> {
 }
 
 /**
+ * Get Super Admin email from environment variable
+ */
+export const getSuperAdminEmail = (): string => {
+  const email = process.env.SUPER_ADMIN_EMAIL;
+  if (!email) {
+    console.warn("SUPER_ADMIN_EMAIL not configured");
+    return "";
+  }
+  return email.toLowerCase().trim();
+};
+
+/**
+ * Verify that the current user is the Super Admin
+ */
+export async function requireSuperAdmin(): Promise<Session> {
+  const session = await getServerSession();
+  const superAdminEmail = getSuperAdminEmail();
+
+  if (!superAdminEmail || !session || session.user.email.toLowerCase() !== superAdminEmail) {
+    throw new Error("Unauthorized: Super Admin access required");
+  }
+
+  return session;
+}
+
+/**
  * Verify that a user is authenticated
  */
 export async function requireAuth(): Promise<Session> {

@@ -17,6 +17,13 @@ interface EditingEvent {
   id: string;
   form: EventForm;
 }
+// Helper to format date for datetime-local input (YYYY-MM-DDTHH:mm)
+const formatForInput = (date: Date | string) => {
+  const d = new Date(date);
+  const offset = d.getTimezoneOffset() * 60000;
+  const localIso = new Date(d.getTime() - offset).toISOString();
+  return localIso.slice(0, 16);
+};
 
 export default function AdminEventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -51,10 +58,16 @@ export default function AdminEventsPage() {
     setSaving(true);
     setError(null);
     try {
+      const payload = {
+        ...form,
+        starts_at: new Date(form.starts_at).toISOString(),
+        ends_at: new Date(form.ends_at).toISOString(),
+      };
+
       const res = await fetch("/api/events", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to create event");
@@ -73,8 +86,8 @@ export default function AdminEventsPage() {
       form: {
         title: event.title,
         description: event.description,
-        starts_at: new Date(event.starts_at).toISOString().slice(0, 16),
-        ends_at: new Date(event.ends_at).toISOString().slice(0, 16),
+        starts_at: formatForInput(event.starts_at),
+        ends_at: formatForInput(event.ends_at),
       },
     });
   };
@@ -84,10 +97,16 @@ export default function AdminEventsPage() {
     setSaving(true);
     setError(null);
     try {
+      const payload = {
+        ...editing.form,
+        starts_at: new Date(editing.form.starts_at).toISOString(),
+        ends_at: new Date(editing.form.ends_at).toISOString(),
+      };
+
       const res = await fetch(`/api/events/${editing.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(editing.form),
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to update event");
