@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getNotes, getNotesByUserProfile, createNote, getUserByEmail } from "@/lib/supabase";
+import { notifyTargetAudience, notifyAllUsers } from "@/lib/notifications";
 import { requireAuth, requireAdmin } from "@/lib/auth";
 
 /**
@@ -67,6 +68,22 @@ export async function POST(req: Request) {
       year_of_study,
       created_by: session.user.id,
     });
+
+    // Notify relevant users
+    const payload = {
+      title: `New Note: ${title}`,
+      description: `Course: ${course}`,
+      type: "NEW_NOTE" as const, // Ensure literal type
+      link: `/notes/${note.id}`
+    };
+
+    const hasTarget = (branches && branches.length > 0) || (semesters && semesters.length > 0) || year_of_study;
+
+    const notificationPromise = hasTarget
+      ? notifyTargetAudience({ branches, semesters, year: year_of_study }, payload)
+      : notifyAllUsers(payload);
+
+    await notificationPromise;
 
     return NextResponse.json(
       { success: true, note },

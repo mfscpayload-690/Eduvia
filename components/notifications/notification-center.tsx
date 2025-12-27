@@ -50,7 +50,39 @@ const getTimeAgo = (date: Date) => {
 export function NotificationCenter() {
     const [isOpen, setIsOpen] = useState(false);
     const [notifications, setNotifications] = useState<Notification[]>([]);
+    const [loading, setLoading] = useState(true);
     const containerRef = useRef<HTMLDivElement>(null);
+
+    const fetchNotifications = async () => {
+        try {
+            const res = await fetch("/api/notifications");
+            const data = await res.json();
+            if (data.success) {
+                // Convert timestamp strings to Date objects
+                const parsed = data.notifications.map((n: any) => ({
+                    ...n,
+                    timestamp: new Date(n.created_at)
+                }));
+                setNotifications(parsed);
+            }
+        } catch (error) {
+            console.error("Failed to fetch notifications:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Poll for notifications every 60 seconds
+    useEffect(() => {
+        fetchNotifications();
+        const interval = setInterval(fetchNotifications, 60000);
+        return () => clearInterval(interval);
+    }, []);
+
+    // Refresh when opening
+    useEffect(() => {
+        if (isOpen) fetchNotifications();
+    }, [isOpen]);
 
     // Close on outside click
     useEffect(() => {
@@ -70,12 +102,29 @@ export function NotificationCenter() {
 
     const unreadCount = notifications.filter(n => !n.read).length;
 
-    const handleMarkAllRead = () => {
+    const handleMarkAllRead = async () => {
+        // Optimistic update
         setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+
+        try {
+            await fetch("/api/notifications", { method: "PATCH" });
+        } catch (error) {
+            console.error("Failed to mark all read");
+            fetchNotifications(); // Revert/Refresh
+        }
     };
 
-    const handleNotificationClick = (id: string) => {
+    const handleNotificationClick = async (id: string, link?: string) => {
+        // Optimistic update
         setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
+
+        // Async call
+        fetch(`/api/notifications/${id}`, { method: "PATCH" });
+
+        if (link) {
+            window.location.href = link;
+            setIsOpen(false);
+        }
     };
 
     return (
@@ -84,6 +133,7 @@ export function NotificationCenter() {
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="relative p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+                aria-label="Notifications"
             >
                 <Bell className="h-5 w-5 text-neutral-600 dark:text-neutral-300" />
                 {unreadCount > 0 && (
@@ -116,7 +166,12 @@ export function NotificationCenter() {
 
                         {/* List */}
                         <div className="max-h-[70vh] overflow-y-auto custom-scrollbar">
-                            {notifications.length === 0 ? (
+                            {loading && notifications.length === 0 ? (
+                                <div className="p-8 text-center text-muted-foreground">
+                                    <div className="animate-spin h-5 w-5 border-2 border-brand-500 border-t-transparent rounded-full mx-auto mb-2" />
+                                    <p className="text-xs">Loading updates...</p>
+                                </div>
+                            ) : notifications.length === 0 ? (
                                 <div className="p-8 text-center text-neutral-500 dark:text-neutral-400">
                                     <Bell className="h-12 w-12 mx-auto mb-3 opacity-10" />
                                     <p className="font-medium text-sm mb-1">No notifications yet</p>
@@ -129,7 +184,7 @@ export function NotificationCenter() {
                                     {notifications.map((notification) => (
                                         <div
                                             key={notification.id}
-                                            onClick={() => handleNotificationClick(notification.id)}
+                                            onClick={() => handleNotificationClick(notification.id, notification.link)}
                                             className={cn(
                                                 "p-4 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors cursor-pointer flex gap-3 items-start group",
                                                 !notification.read && "bg-blue-50/50 dark:bg-blue-900/10"

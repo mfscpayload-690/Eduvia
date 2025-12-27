@@ -1,6 +1,7 @@
 
 import { NextResponse } from "next/server";
 import { getLostFoundItems, createLostFoundItem } from "@/lib/supabase";
+import { notifyAllUsers } from "@/lib/notifications";
 import { requireAuth } from "@/lib/auth";
 
 /**
@@ -57,6 +58,19 @@ export async function POST(req: Request) {
       contact,
       user_id: session.user.id,
     });
+
+    // Notify everyone
+    // We run this async without awaiting to speed up response
+    const notificationPromise = notifyAllUsers({
+      title: `${status === 'lost' ? 'Lost Item Reported' : 'Found Item Reported'}: ${item_name}`,
+      description: `${description.substring(0, 100)}${description.length > 100 ? '...' : ''}`,
+      type: "LOST_FOUND",
+      link: "/lostfound"
+    });
+
+    // In Edge/Serverless environments, you might need to waitUntil or await. 
+    // For this environment, awaiting is safer to prevent execution cut-off.
+    await notificationPromise;
 
     return NextResponse.json(
       { success: true, item },
