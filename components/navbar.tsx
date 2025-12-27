@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession, signIn, signOut } from "next-auth/react";
-import { Menu, LogOut, LogIn, X, Home, Sparkles, BookOpen, Clock, MapPin, Calendar, Heart, Settings, Shield, User } from "lucide-react";
+import { Menu, LogOut, LogIn, X, Home, Sparkles, BookOpen, Clock, MapPin, Calendar, Heart, Settings, Shield, User, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -44,6 +44,12 @@ export function Navbar() {
   }, [mobileMenuOpen]);
 
   const mobileNavItems = [...mobileNavItemsBase];
+
+  // Add Overview for Super Admin only
+  if (session?.user?.role === "super_admin") {
+    mobileNavItems.splice(1, 0, { href: "/admin/overview", label: "Overview", icon: BarChart3 });
+  }
+
   if (session?.user?.role === "admin" || session?.user?.role === "super_admin") {
     mobileNavItems.push({ href: "/admin", label: "Admin", icon: Shield });
   }

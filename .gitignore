@@ -13,7 +13,7 @@
 .env.development
 .env.production
 .env.staging
-!.env.example
+
 
 # Private keys and certificates
 *.pem
@@ -22,6 +22,12 @@
 *.p12
 *.pfx
 *.jks
+
+# SQL Database Dumps and Migrations (User Request)
+*.sql
+migrations/
+database/
+
 
 # Service account credentials
 *-credentials.json

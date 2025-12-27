@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookOpen, Clock, MapPin, Calendar, Heart, Settings, Sparkles, Shield } from "lucide-react";
+import { BookOpen, Clock, MapPin, Calendar, Heart, Settings, Sparkles, Shield, BarChart3 } from "lucide-react";
 
 const quickLinks = [
   {
@@ -57,6 +57,14 @@ const quickLinks = [
     icon: <Settings className="w-6 h-6" />,
     color: "text-neutral-400",
   },
+  {
+    href: "/admin/overview",
+    label: "Overview",
+    description: "System analytics and health",
+    icon: <BarChart3 className="w-6 h-6" />,
+    color: "text-blue-400",
+    superAdminOnly: true,
+  },
 ];
 
 export default function DashboardPage() {
@@ -99,23 +107,29 @@ export default function DashboardPage() {
 
       {/* Quick Links Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {quickLinks.map((link) => (
-          <Link key={link.href} href={link.href}>
-            <Card className="glass-card h-full border-white/5 transition-all duration-300 hover:scale-[1.02] hover:bg-white/10 hover:border-brand-500/50 hover:shadow-[0_0_20px_rgba(6,182,212,0.15)] group">
-              <CardHeader className="p-6">
-                <div className="flex items-center gap-4 mb-3">
-                  <div className={`inline-flex p-3 rounded-xl bg-white/5 ring-1 ring-white/10 transition-colors group-hover:bg-brand-500/10 ${link.color}`}>
-                    {link.icon}
+        {quickLinks.map((link) => {
+          // Hide super admin only links from non-super admins
+          if ((link as any).superAdminOnly && (session.user as any).role !== "super_admin") {
+            return null;
+          }
+          return (
+            <Link key={link.href} href={link.href}>
+              <Card className="glass-card h-full border-white/5 transition-all duration-300 hover:scale-[1.02] hover:bg-white/10 hover:border-brand-500/50 hover:shadow-[0_0_20px_rgba(6,182,212,0.15)] group">
+                <CardHeader className="p-6">
+                  <div className="flex items-center gap-4 mb-3">
+                    <div className={`inline-flex p-3 rounded-xl bg-white/5 ring-1 ring-white/10 transition-colors group-hover:bg-brand-500/10 ${link.color}`}>
+                      {link.icon}
+                    </div>
+                    <CardTitle className="text-xl font-heading mb-0">{link.label}</CardTitle>
                   </div>
-                  <CardTitle className="text-xl font-heading mb-0">{link.label}</CardTitle>
-                </div>
-                <CardDescription className="text-neutral-400 transition-colors group-hover:text-neutral-300">
-                  {link.description}
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          </Link>
-        ))}
+                  <CardDescription className="text-neutral-400 transition-colors group-hover:text-neutral-300">
+                    {link.description}
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            </Link>
+          );
+        })}
       </div>
 
       {/* Admin Section - visible to admins and super_admin */}

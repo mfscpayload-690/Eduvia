@@ -14,24 +14,23 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="relative inline-flex h-10 w-[70px] items-center rounded-full border border-neutral-300 bg-neutral-200 px-1 shadow-inner transition-all duration-300 hover:border-blue-400 hover:shadow-lg dark:border-neutral-700 dark:bg-neutral-800"
+      className="relative inline-flex h-7 w-12 items-center rounded-full border border-neutral-300 bg-neutral-200 px-1 shadow-inner transition-all duration-300 hover:border-blue-400 hover:shadow-lg dark:border-neutral-700 dark:bg-neutral-800"
       aria-label="Toggle theme"
     >
       <motion.div
-        animate={{ x: isDark ? 34 : 0 }}
+        animate={{ x: isDark ? 20 : 0 }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
-        className={`flex h-8 w-8 items-center justify-center rounded-full shadow-lg ${
-          isDark
+        className={`flex h-5 w-5 items-center justify-center rounded-full shadow-lg ${isDark
             ? "bg-gradient-to-br from-blue-500 to-indigo-600"
             : "bg-gradient-to-br from-amber-400 to-orange-500"
-        }`}
+          }`}
       >
         <motion.div
           initial={false}
           animate={{ rotate: isDark ? 0 : 180, scale: isDark ? 1 : 1.1 }}
           transition={{ duration: 0.3 }}
         >
-          {isDark ? <Moon size={18} className="text-white" /> : <Sun size={18} className="text-white" />}
+          {isDark ? <Moon size={12} className="text-white" /> : <Sun size={12} className="text-white" />}
         </motion.div>
       </motion.div>
     </button>
