@@ -350,6 +350,29 @@ export async function updateLostFoundItem(
   return data;
 }
 
+export async function getLostFoundItemById(id: string): Promise<LostFoundItem | null> {
+  const { data, error } = await supabase
+    .from("lostfound")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error && error.code !== "PGRST116") {
+    throw new Error(`Failed to fetch lost & found item: ${error.message}`);
+  }
+
+  return data || null;
+}
+
+export async function deleteLostFoundItem(id: string): Promise<void> {
+  const { error } = await supabase
+    .from("lostfound")
+    .delete()
+    .eq("id", id);
+
+  if (error) throw new Error(`Failed to delete lost & found item: ${error.message}`);
+}
+
 // ============================================================================
 // Super Admin Stats
 // ============================================================================

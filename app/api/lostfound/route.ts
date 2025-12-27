@@ -32,8 +32,7 @@ export async function GET() {
  */
 export async function POST(req: Request) {
   try {
-    await requireAuth();
-
+    const session = await requireAuth();
     const body = await req.json();
     const { item_name, description, status, contact } = body;
 
@@ -56,6 +55,7 @@ export async function POST(req: Request) {
       description,
       status,
       contact,
+      user_id: session.user.id,
     });
 
     return NextResponse.json(
