@@ -12,9 +12,22 @@
 
 ---
 
+> [!IMPORTANT]
+> ## ⚠️ Project Archived - No Longer Actively Maintained
+> 
+> **As of January 30, 2026**, all development and hosting for eduvia has been discontinued by the original maintainer.
+> 
+> **However, this repository remains open source and available for community forks!** 
+>
+> If you'd like to continue developing eduvia or adapt it for your institution, please see the [Fork & Continue](#fork--continue) section below.
+>
+> Special thanks to **Sreeram**, **Aleena**, and **Devu** for their invaluable contributions to this project. 💙
+
+---
+
 ## About eduvia
 
-**eduvia** is a modern, all-in-one campus management platform designed to simplify academic life. Built for students and faculty at IHRD College of Engineering Kallooppara, eduvia brings together schedules, notes, events, and intelligent study assistance into a single, beautiful interface.
+**eduvia** was a modern, all-in-one campus management platform designed to simplify academic life. Built for students and faculty at IHRD College of Engineering Kallooppara, eduvia brought together schedules, notes, events, and intelligent study assistance into a single, beautiful interface.
 
 > *Your academic journey, simplified.*
 
@@ -123,9 +136,41 @@ Developed by students of IHRD College of Engineering Kallooppara:
 
 ---
 
+## Fork & Continue
+
+This project is now **open source** and available for community continuation! 
+
+### How to Fork and Deploy Your Own Version
+
+1. **Fork this repository** on GitHub
+2. **Clone your fork** to your local machine
+3. **Set up environment variables** (see [FORK_GUIDE.md](FORK_GUIDE.md) for details)
+4. **Create a Supabase project** and import the database schema
+5. **Configure Google OAuth** for authentication
+6. **Deploy to Vercel** or your preferred platform
+
+**📖 Full setup guide:** See [FORK_GUIDE.md](FORK_GUIDE.md) for complete instructions
+
+**💬 Questions?** Check the [Contributing Guide](CONTRIBUTING.md)
+
+### Attribution
+
+If you fork and modify this project, please:
+- Keep the original team credits in acknowledgments
+- Link back to this repository
+- Follow the MIT License terms
+
+---
+
 ## License
 
-This project is proprietary software developed for IHRD College of Engineering Kallooppara.
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+**What this means:**
+- ✅ Free to use, modify, and distribute
+- ✅ Commercial use allowed
+- ✅ No warranty provided by original authors
+- ✅ Must include original copyright notice
 
 ---
 

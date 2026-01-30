@@ -1,7 +1,14 @@
 {
-  "name": "smart-campus-assistant",
-  "version": "0.1.0",
-  "private": true,
+  "name": "eduvia",
+  "version": "1.0.0-archived",
+  "private": false,
+  "deprecated": true,
+  "license": "MIT",
+  "description": "Modern campus management platform (ARCHIVED - No longer maintained)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mfscpayload-690/eduvia.git"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
